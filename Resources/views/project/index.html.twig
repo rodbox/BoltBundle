@@ -1,0 +1,54 @@
+{% extends app.request.isxmlhttprequest ? '::base.html.twig' : 'AdminBundle::index.html.twig' %}
+
+{% set crudEntity = "RBBoltBundle:project" %}
+
+{% block body %}
+<form action="#" id="project-list" class="batch-form">
+    <table class="table project-table">
+        <thead class="thead-inverse">
+            <tr>
+                <th class="td-check">
+                    {{ crud_menu(crudEntity) }}
+                </th>
+                <th class="{% if projects.isSorted("p.id") %} sorted{% endif %}">{{ knp_pagination_sortable(projects, "label.id" | trans, "p.id") }}
+                </th>
+                <th class="{% if projects.isSorted("p.name") %} sorted{% endif %}">{{ knp_pagination_sortable(projects, "label.name" | trans, "p.name") }}
+                </th>
+                <th class="{% if projects.isSorted("p.description") %} sorted{% endif %}">{{ knp_pagination_sortable(projects, "label.description" | trans, "p.description") }}
+                </th>
+                <th class="{% if projects.isSorted("p.security") %} sorted{% endif %}">{{ knp_pagination_sortable(projects, "label.security" | trans, "p.security") }}
+                </th>
+                <th class="{% if projects.isSorted("p.pointers") %} sorted{% endif %}">{{ knp_pagination_sortable(projects, "label.pointers" | trans, "p.pointers") }}
+                </th>
+                <th class="{% if projects.isSorted("p.do") %} sorted{% endif %}">{{ knp_pagination_sortable(projects, "label.do" | trans, "p.do") }}
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for project in projects %}
+            <tr>
+                <td class="text-center td-check">{{check_me(project.id, crudEntity)}}</td>
+                    <td><a href="{{ path('projects_show', { 'id': project.id }) }}">{{ project.id }}</a></td>
+                    <td>{{ project.name }}</td>
+                    <td>{{ project.description }}</td>
+                    <td>{% if project.security %}{{ project.security|join(', ') }}{% endif %}</td>
+                    <td>{% if project.pointers %}{{ project.pointers|join(', ') }}{% endif %}</td>
+                    <td>{{ project.do }}</td>
+                    <td class="text-right td-actions">
+                        {{action_me(project.id, crudEntity)}}
+                    </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="8" class="navigation text-right">
+                    {{ knp_pagination_render(projects) }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends app.request.isxmlhttprequest ? '::base.html.twig' : 'AdminBundle::index.html.twig' %}
+
+{% set crudEntity = "RBBoltBundle:item" %}
+
+{% block body %}
+<form action="#" id="item-list" class="batch-form">
+    <table class="table item-table">
+        <thead class="thead-inverse">
+            <tr>
+                <th class="td-check">
+                    {{ crud_menu(crudEntity) }}
+                </th>
+                <th class="{% if items.isSorted("p.id") %} sorted{% endif %}">{{ knp_pagination_sortable(items, "label.id" | trans, "p.id") }}
+                </th>
+                <th class="{% if items.isSorted("p.name") %} sorted{% endif %}">{{ knp_pagination_sortable(items, "label.name" | trans, "p.name") }}
+                </th>
+                <th class="{% if items.isSorted("p.description") %} sorted{% endif %}">{{ knp_pagination_sortable(items, "label.description" | trans, "p.description") }}
+                </th>
+                <th class="{% if items.isSorted("p.context") %} sorted{% endif %}">{{ knp_pagination_sortable(items, "label.context" | trans, "p.context") }}
+                </th>
+                <th class="{% if items.isSorted("p.view") %} sorted{% endif %}">{{ knp_pagination_sortable(items, "label.view" | trans, "p.view") }}
+                </th>
+                <th class="{% if items.isSorted("p.multiple") %} sorted{% endif %}">{{ knp_pagination_sortable(items, "label.multiple" | trans, "p.multiple") }}
+                </th>
+                <th class="{% if items.isSorted("p.type") %} sorted{% endif %}">{{ knp_pagination_sortable(items, "label.type" | trans, "p.type") }}
+                </th>
+                <th class="{% if items.isSorted("p.projects") %} sorted{% endif %}">{{ knp_pagination_sortable(items, "label.projects" | trans, "p.projects") }}
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td class="text-center td-check">{{check_me(item.id, crudEntity)}}</td>
+                    <td><a href="{{ path('item_show', { 'id': item.id }) }}">{{ item.id }}</a></td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.context }}</td>
+                    <td>{{ item.view }}</td>
+                    <td>{% if item.multiple %}Yes{% else %}No{% endif %}</td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.projects }}</td>
+                    <td class="text-right td-actions">
+                        {{action_me(item.id, crudEntity)}}
+                    </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="10" class="navigation text-right">
+                    {{ knp_pagination_render(items) }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
+
+{% endblock %}

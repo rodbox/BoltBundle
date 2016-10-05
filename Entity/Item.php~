@@ -1,0 +1,76 @@
+<?php
+
+namespace RB\BoltBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Item
+ *
+ * @ORM\Table(name="item")
+ * @ORM\Entity(repositoryClass="RB\BoltBundle\Repository\ItemRepository")
+ */
+class Item
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=50)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="context", type="string", length=50, nullable=true)
+     */
+    private $context;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="view", type="string", length=255, nullable=true)
+     */
+    private $view;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="multiple", type="boolean", nullable=true)
+     */
+    private $multiple;
+
+
+
+     /**
+     *
+     * @ORM\ManyToOne(targetEntity="RB\BoltBundle\Entity\Type", cascade={"persist"})
+     */
+    private $type;
+
+    /**
+     * @var \stdClass
+     *
+     * @ORM\Column(name="projects", type="object", nullable=true)
+     */
+    private $projects;
+
+
+}
+

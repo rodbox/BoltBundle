@@ -1,0 +1,38 @@
+{% extends app.request.isxmlhttprequest ? '::base.html.twig' : 'AdminBundle::index.html.twig' %}
+    {% set crudEntity = "RBBoltBundle:projects" %}
+{% block submenu %}
+    <div class="btn-group">
+        <a href="{{ path('projects_index') }}" class="btn btn-default">{{'action.back'|trans}}</a>            <a href="{{ path('projects_edit', { 'id': project.id }) }}" class="btn btn-default">{{'action.edit'|trans}}</a>    </div>        {{ form_start(delete_form,{attr:{class:"btn-group"}}) }}
+            <button type="submit" value="Delete" class="btn btn-danger">{{'action.remove'|trans}}</button>
+        {{ form_end(delete_form) }}{% endblock %}
+
+{% block body %}
+<table>
+    <tbody>
+        <tr>
+            <th>{{ "label.id" | trans }}</th>
+            <td>{{ project.id }}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.name" | trans }}</th>
+            <td>{{ project.name }}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.description" | trans }}</th>
+            <td>{{ project.description }}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.security" | trans }}</th>
+            <td>{% if project.security %}{{ project.security|join(', ') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.pointers" | trans }}</th>
+            <td>{% if project.pointers %}{{ project.pointers|join(', ') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.do" | trans }}</th>
+            <td>{{ project.do }}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

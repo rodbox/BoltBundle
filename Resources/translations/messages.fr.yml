@@ -1,0 +1,7 @@
+route:
+    bolt:
+        title: Bolt
+    bolt_item_new:
+        title: Nouveau Item
+    bolt_projects_new:
+        title: Nouveau Projet

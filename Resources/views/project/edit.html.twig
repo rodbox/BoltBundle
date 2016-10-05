@@ -1,0 +1,21 @@
+{% extends app.request.isxmlhttprequest ? '::base.html.twig' : 'AdminBundle::index.html.twig' %}
+{% set crudEntity = "RBBoltBundle:project" %}
+
+{% block body %}
+{{ menu_edit("projects", delete_form) }}
+{{ form_start(edit_form,{action:path("projects_edit",{id:project.id}),attr:{class:"form-live"}}) }}
+
+  {{ form_row(edit_form.name,{attr:{class:"form-control"}}) }}
+
+  {{ form_row(edit_form.description,{attr:{class:"form-control"}}) }}
+
+  {{ form_row(edit_form.security,{attr:{class:"form-control"}}) }}
+
+  {{ form_row(edit_form.pointers,{attr:{class:"form-control"}}) }}
+
+  {{ form_row(edit_form.do,{attr:{class:"form-control"}}) }}
+<div class="form-footer">
+        <button type="submit" class="btn btn-success btn-crud-submit">{{"action.save"|trans}}</button>
+</div>
+{{ form_end(edit_form) }}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends app.request.isxmlhttprequest ? '::base.html.twig' : 'AdminBundle::index.html.twig' %}
+    {% set crudEntity = "RBBoltBundle:item" %}
+{% block submenu %}
+    <div class="btn-group">
+        <a href="{{ path('item_index') }}" class="btn btn-default">{{'action.back'|trans}}</a>            <a href="{{ path('item_edit', { 'id': item.id }) }}" class="btn btn-default">{{'action.edit'|trans}}</a>    </div>        {{ form_start(delete_form,{attr:{class:"btn-group"}}) }}
+            <button type="submit" value="Delete" class="btn btn-danger">{{'action.remove'|trans}}</button>
+        {{ form_end(delete_form) }}{% endblock %}
+
+{% block body %}
+<table>
+    <tbody>
+        <tr>
+            <th>{{ "label.id" | trans }}</th>
+            <td>{{ item.id }}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.name" | trans }}</th>
+            <td>{{ item.name }}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.description" | trans }}</th>
+            <td>{{ item.description }}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.context" | trans }}</th>
+            <td>{{ item.context }}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.view" | trans }}</th>
+            <td>{{ item.view }}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.multiple" | trans }}</th>
+            <td>{% if item.multiple %}Yes{% else %}No{% endif %}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.type" | trans }}</th>
+            <td>{{ item.type }}</td>
+        </tr>
+        <tr>
+            <th>{{ "label.projects" | trans }}</th>
+            <td>{{ item.projects }}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

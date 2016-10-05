@@ -1,0 +1,70 @@
+.flowchart-operator-connector-label {
+    font-size: 0.7rem !important;
+}
+
+
+
+.flowchart-operator{
+
+	.flowchart-operator-connector{
+		top:-1px !important;
+	}
+
+	&.selected{
+		-webkit-box-shadow: 0 0 0 5px rgba(0,0,0,0.10);
+		box-shadow: 0 0 0 5px rgba(0,0,0,0.10);
+		border-color: inherit !important;
+	}
+
+	.flowchart-operator-inputs-outputs {
+	    margin-bottom: 0rem !important;
+	    margin-top: 0rem !important;
+	}
+
+	&.type-function{
+		
+		&,
+		&.flowchart-operator-title{
+			background-color: #000;
+			color:#fff;
+			border-color: #000;
+		}
+
+		&,
+		.flowchart-operator-connector-small-arrow,
+		.flowchart-operator-connector-arrow{
+			border-color:#000 !important;
+		}
+
+		.flowchart-operator-inputs{
+			.flowchart-operator-connector-small-arrow,
+			.flowchart-operator-connector-arrow{
+				border-bottom-color: transparent !important;
+    			border-top-color:  transparent !important;
+			}
+		}
+	}
+
+	&.type-free{
+		&,
+		.flowchart-operator-connector-small-arrow,
+		.flowchart-operator-connector-arrow{
+			border-color:#F76C51 !important;
+		}
+
+		.flowchart-operator-inputs{
+
+		}
+	}
+
+
+	.flowchart-operator-outputs,
+	.flowchart-operator-inputs{
+		.flowchart-operator-connector-small-arrow,
+		.flowchart-operator-connector-arrow{
+			border-bottom-color: transparent !important;
+			border-top-color:  transparent !important;
+		}
+	}
+}
+

@@ -1,0 +1,41 @@
+{% extends 'RBAdminBundle::index.html.twig' %}
+
+{% block title %}{% endblock title %}
+
+{% block subTitle %}{% endblock subTitle %}
+
+{% block breadcrumb %}{% endblock breadcrumb %}
+
+{% block body %}
+	<div id="sidebar-left" class="col-xs-2">
+		{% include 'RBBoltBundle:Items:Menu/menu-item.html.twig' %}
+	</div>
+	<div id="" class="col-xs-10">
+		<form id="bolt-form" action="#">
+			{% include 'RBBoltBundle:Items:Menu/menu-projects.html.twig' %}
+			<div id="bolt-content" class="col-xs-12 p-c-v" style="padding-left:0px !important; padding-right:0px !important;">
+			<div class="clearfix"></div>
+			<!-- BEGIN TABSCONTENT  -->
+			<div class="tab-content">
+			    <div id="project-setting-tab-1" class="tab-pane active">
+			    	
+					<div id="sidebar-inner" class="col-xs-2">setting</div>
+					<div  class="col-xs-10">
+						<div id="bolt-builder" style="height:76vh; background-color: rgba(0,0,0,0.1); "></div>
+					</div>
+			    </div>
+			    <div id="project-setting-tab-2" class="tab-pane">
+				<textarea id="bolt-description" name="description" class="form-control m-c-b" style="height:25vh; background-color: rgba(0,0,0,0.1);"></textarea>
+
+			    </div>
+			</div>
+			<!-- END TABSCONTENT  -->
+
+
+			</div>
+
+			{{ mustache_tpl('bolt_item','@RBBoltBundle:tpl:list-item.html.twig') }}
+			
+		</form>
+	</div>
+{% endblock body %}

@@ -1,0 +1,13 @@
+{% extends app.request.isxmlhttprequest ? '::base.html.twig' : 'AdminBundle::index.html.twig' %}
+{% set crudEntity = "RBBoltBundle:projects" %}
+
+{% block body %}
+{{ form_start(form, {action:path("bolt_projects_new"),attr:{class:"form-live"}}) }}    {{ form_row(form.name,{attr: {class: "form-control"}} ) }}
+    {{ form_row(form.description,{attr: {class: "form-control"}} ) }}
+    {{ form_row(form.security,{attr: {class: "form-control"}} ) }}
+
+    <div class="form-footer">
+        <button type="submit" class="btn btn-success btn-crud-submit">{{"action.save"|trans}}</button>
+    </div>
+{{ form_end(form) }}
+{% endblock %}

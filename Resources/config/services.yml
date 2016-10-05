@@ -1,0 +1,13 @@
+services:
+#    rb_bolt.example:
+#        class: RB\BoltBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+
+    rb_bolt.extension:
+        class: RB\BoltBundle\Twig\BoltExtension
+        arguments: ["@service_container", "@twig", "@session"]
+        tags:
+            - { name: twig.extension }
+    rb_bolt.services:
+        class: RB\BoltBundle\Services\BoltService
+        arguments: ["@service_container", "@session", "@router"]
