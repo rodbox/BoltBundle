@@ -1,7 +1,7 @@
 {
-    "name": "rodbox\/rodboxcore",
+    "name": "rodbox\/rodboxbolt",
     "version": "0.1",
-    "description": "core pour RB en version Alpha",
+    "description": "Bolt pour RB en version Alpha Constructeur de chemin d'action dans un input depuis differentes sources.",
     "license": "MIT",
     "type": "symfony-bundle",
     "keywords": [
@@ -9,15 +9,10 @@
         "core",
         "symfony"
     ],
-    "homepage": "https:\/\/github.com\/rodbox\/corebundle",
+    "homepage": "https:\/\/github.com\/rodbox\/boltbundle",
     "require": {
         "symfony\/symfony": "3.*",
-        "knplabs\/knp-paginator-bundle": "^2.5.1",
-        "knplabs\/knp-markdown-bundle": "~1.3",
-        "doctrine/doctrine-fixtures-bundle": "@dev",
-        "stof/doctrine-extensions-bundle": "^1.2",
-        "symfony/assetic-bundle": "@dev",
-        "picqer/php-barcode-generator": "^0.2.0"
+        "doctrine/doctrine-fixtures-bundle": "@dev"
     },
     "authors": [
         {
@@ -27,7 +22,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "RB\\CoreBundle\\": ""
+            "RB\\BoltBundle\\": ""
         }
     },
     "minimum-stability": "dev"
