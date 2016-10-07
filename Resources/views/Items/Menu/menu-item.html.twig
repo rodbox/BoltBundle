@@ -1,11 +1,5 @@
-	<div class="input-group">
-		<span class="input-group-btn">
-		<a href="{{path('bolt_item_expose') }}" class="btn btn-tpl autoclick" data-tpl="bolt_item" data-target="#items-list"><i class="fa fa-folder-o"></i></a>
-	</span>
-	      <input type="text" class="form-control" name="finder">
-	        <span class="input-group-btn">
-	        <a href="{{path('bolt_item_new') }}" class="btn btn-default btn-modal" title="{{ 'route.bolt_item_new.title' | trans }}"><i class="fa fa-plus"></i></a>
-	      </span>
-	    </div>
-
-	<div id="items-list" class=" p-c-t"></div>
+<div class="btn-group">
+	<a href="{{path('bolt_item_new') }}" class="btn btn-default btn-modal" title="{{ 'route.bolt_item_new.title' | trans }}"><i class="fa fa-plus"></i></a>
+	<a href="{{path('bolt_item_expose') }}" class="btn btn-default btn-tpl autoclick" data-tpl="bolt_item" data-target="#items-list"><i class="fa fa-folder-o"></i></a>
+</div>
+<div id="items-list" class=" p-c-t"></div>

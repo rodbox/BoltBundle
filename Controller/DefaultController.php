@@ -4,7 +4,8 @@ namespace RB\BoltBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use RB\BoltBundle\Form\ProjectsType;
+use RB\BoltBundle\Form\ItemType;
 /**
 * @Route("/bolt")
 */
@@ -15,7 +16,13 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('RBBoltBundle:Default:index.html.twig');
+        $formItem       = $this->createForm('RB\BoltBundle\Form\ItemType');
+        $formProjects   = $this->createForm('RB\BoltBundle\Form\ProjectsType');
+        
+        return $this->render('RBBoltBundle:Default:index.html.twig',[
+            'formItem'      => $formItem->createView(),
+            'formProjects'  => $formProjects->createView()
+        ]);
     }
 
 	/**
@@ -35,5 +42,25 @@ class DefaultController extends Controller
 
     	return new JsonResponse($r);
     }
+
+
+    /**
+    * @Route("/bolt_get_info/{type}",name="bolt_get_info", options={"expose"=true}, defaults={"type"="route"})
+    */
+    public function bolt_get_infoAction(Request $request, $type)
+    {
+       $list = [];
+
+        $r    = [
+            'infotype' => 'success',
+            'msg'      => 'action : ok',
+            'app'      => $this->renderView('::base.html.twig', [
+            'list' => $list
+            ])
+        ];
+
+        return new JsonResponse($r);
+    }
+
         	
 }

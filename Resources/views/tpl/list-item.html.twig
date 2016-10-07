@@ -1,5 +1,6 @@
-<div class="card card-item m-c-b card-free" style="border-left:5px solid {{ type.color }};" data-description="{{ description }}">	
-	<div class="card-block p-c">
-		<h4 class="card-title" style="margin-bottom:0px !important;"><a href="#" class="card-link create-item c-1 " data-type="{{ type.name }}" data-name="{{ name }}" data-ref="e{{id}}"><span class="text-muted sm" style="font-size:0.7rem !important	;">e{{ id }}.</span> <strong>{{ name }}</strong> <span class="text-muted sm pull-right" style="font-size:0.7rem !important	;">{{ type.name }}</span></a></h4>
+<div class="card card-item card-{{ type.name }}" style="border-left:5px solid {{ type.color }} !important;" data-description="{{ description }}">	
+	<div class="card-block">
+		<h4 class="card-title"><a href="#" class="card-link create-item c-1 " data-type="{{ type.name }}" data-name="{{ name }}" data-ref="e{{id}}"><div class="text-muted sm">e{{ id }}.</div> <strong>{{ name }}</strong> </a>
+			<div class="text-muted sm ">{{ type.name }}</div></h4>
 	</div>
 </div>

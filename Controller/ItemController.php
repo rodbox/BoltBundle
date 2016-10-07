@@ -20,6 +20,27 @@ class ItemController extends Controller
 {
     
     /**
+    * @Route("/load/{name}",name="bolt_item_load", options={"expose"=true})
+    */
+    public function loadAction(Request $request, $name)
+    {
+        
+        $em       = $this->getDoctrine()->getManager();
+        $session  = $request->getSession();
+
+        $entities = $em
+            ->getRepository('RBBoltBundle:Item')
+            ->findOneByName($name);
+
+
+        /* SERVICE : rb.serializer */
+        $list = $this->get('rb.serializer')->normalize($entities);
+        /* END SERVICE :  rb.serializer */
+
+        return new JsonResponse($list);
+    }
+
+    /**
     * @Route("/expose",name="bolt_item_expose")
     */
     public function exposeAction(Request $request)
@@ -82,6 +103,8 @@ class ItemController extends Controller
         ]);
     }
 
+
+
     /**
      * Creates a new Item entity.
      *
@@ -113,6 +136,8 @@ class ItemController extends Controller
         ]);
     }
 
+
+
     /**
      * Finds and displays a Item entity.
      *
@@ -128,6 +153,8 @@ class ItemController extends Controller
             'delete_form' => $deleteForm->createView(),
         ]);
     }
+
+
 
     /**
      * Displays a form to edit an existing Item entity.
@@ -160,6 +187,9 @@ class ItemController extends Controller
             'delete_form'   => $deleteForm->createView()
         ]);
     }
+
+
+
     /**
      * Batch selected Item entities.
      *
@@ -175,8 +205,6 @@ class ItemController extends Controller
         }
 
 
-
-
         $r = [
             'infotype' => 'success',
             'msg'      => 'batch ok'
@@ -184,6 +212,8 @@ class ItemController extends Controller
 
         return new JsonResponse($r);
     }
+
+
 
     /**
      * Finds and displays a Item entity.
@@ -205,6 +235,8 @@ class ItemController extends Controller
 
         return new JsonResponse($r);
     }
+
+
 
     /**
      * Import Item entity.

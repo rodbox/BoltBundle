@@ -1,152 +1,270 @@
 $(document).ready(function() {
-    // documentation flowchart 
-    // https://github.com/sdrdis/jquery.flowchart
+    /*
+     flowchart :
+     https://github.com/sdrdis/jquery.flowchart
+     
+     panzoom :
+     http://timmywil.github.io/jquery.panzoom/
+    */
 
+
+  var $flowchart          = $('#bolt-builder');
+  var $draggableOperators = $('.card-item');
+  var $container          = $flowchart.parent();
+/*
+  var cx = $flowchart.width() / 2;
+  var cy = $flowchart.height() / 2;
+
+  // Panzoom initialization...
+  $flowchart.panzoom({
+    $zoomIn: $(".zoom-in"),
+    $zoomOut: $(".zoom-out"),
+
+    $reset: $(".reset"),
     
-
-  $(document).ready(function() {
-    var $flowchart = $('#bolt-builder');
-    var $container = $flowchart.parent();
-    
-    var cx = $flowchart.width() / 2;
-    var cy = $flowchart.height() / 2;
-    
-    
-    // Panzoom initialization...
-    $flowchart.panzoom();
-    
-    // Centering panzoom
-    $flowchart.panzoom('pan', -cx + $container.width() / 2, -cy + $container.height() / 2);
-
-    // Panzoom zoom handling...
-    var possibleZooms = [0.5, 0.75, 1, 2, 3];
-    var currentZoom = 2;
-    $container.on('mousewheel.focal', function( e ) {
-        e.preventDefault();
-        var delta = (e.delta || e.originalEvent.wheelDelta) || e.originalEvent.detail;
-        var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
-        currentZoom = Math.max(0, Math.min(possibleZooms.length - 1, (currentZoom + (zoomOut * 2 - 1))));
-        $flowchart.flowchart('setPositionRatio', possibleZooms[currentZoom]);
-        $flowchart.panzoom('zoom', possibleZooms[currentZoom], {
-            animate: false,
-            focal: e
-        });
-    });
+    maxScale: 0.2,
+    increment: 0.05,
+    contain: true
+  }).panzoom();
 
 
+  // Panzoom zoom handling...
+  $container.on('mousewheel.focal', function( e ) {
 
-    var data = {
-      grid : 15,
-      defaultLinkColor :'#2D3034'
-    };
-    $('#bolt-builder').flowchart(data);
-
- 	var operatorI = 0;
+  });
+*/
 
 
+  var data = {
+    'grid' : 15,
+    'defaultLinkColor' :'#2D3034',
+    'data':{}
+  };
+  $flowchart.flowchart(data);
 
- 	$(document).on("click",".create-item",function (e){
- 		e.preventDefault();	
- 		var t = $(this);
- 		
- 		var operatorId = 'created_operator_' + operatorI;
-  	var operatorData = {
-        top: 15 * operatorI,
-        left: 15 * operatorI,
-        properties: {
-          title: t.data('name'),
-          class: 'type-'+t.data('type'),
-          inputs: {
-            input_1: {
-              label: t.data('ref'),
+ 	$.operatorI = 0;
+
+  
+  function createItem(t, pos){
+      var operatorI    = $.operatorI;
+      var operatorId   = 'created_operator_' + operatorI;
+
+      var left  = (pos == undefined || pos.left == undefined)?15 * operatorI + 15:pos.left;
+      var top   = (pos == undefined || pos.top == undefined)?15 * operatorI + 15:pos.top;
+
+      var operatorData = {
+        'top': left,
+        'left': top,
+        'properties': {
+          'title': t.data('name'),
+          'class': 'type-'+t.data('type'),
+          'inputs': {
+            'input_1': {
+              'label': t.data('ref')
             }
           },
-          outputs: {
-            output_1: {
-              label: t.data('ref'),
+          'outputs': {
+            'output_1': {
+              'label': t.data('ref')
             }
           }
         }
       };
-
-      operatorI++;
+    
+      $.operatorI++;
 
       $('#bolt-builder').flowchart('createOperator', operatorId, operatorData);
- 	})
+  }
 
 
 
-   $(document).on("click",".flowchart-operators-layer",function (e){
-    e.preventDefault();  
+  $(document).on("click",".create-item",function (e){
+    //e.preventDefault(); 
     var t = $(this);
-         
-   })
+    createItem(t);
+  });
 
 
 
-    $('#delete_selected_button').click(function() {
-      if (confirm('supprimer la selection'))
-        $('#bolt-builder').flowchart('deleteSelected');
-    });
+  $(document).on("click",".flowchart-operator",function (e){
+    e.preventDefault();  
+   
+    var t    = $(this);
+    var name = t.find('.flowchart-operator-title').text();
+    
+    var url  = Routing.generate('bolt_item_load', {'name':name});
+    var data = {'name':name};
+    $('#item-form').loadme(true);
+    $.get(url, data, function(json){
+      $.form.set(json,'item');
+      $('[name="item[type]"]').val(json.type.id);
+
+      $('#item-form').loadme(false);
+      console.log(json);
+    },'json');
+
+  })
 
 
 
-    $(document).on("click","#bolt-projects-save",function (e){
-      e.preventDefault();  
-      
-      var t         = $(this);
-      
-      var dataBolt  = $('#bolt-builder').flowchart('getData');  
-      var dataForm  = $('#bolt-form').serializeObject();
+  $('#delete_selected_button').click(function(e) {
+    e.preventDefault();
+    if (confirm('supprimer la selection'))
+      $('#bolt-builder').flowchart('deleteSelected');
+  });
 
+
+
+$(document).on("click", "#bolt-projects-save", function (e){
+  e.preventDefault();
+  
+  var t         = $(this);
+  
+  var dataBolt  = $('#bolt-builder').flowchart('getData');  
+  var dataForm  = $('#bolt-form').serializeObject();
+
+  var data = {
+    'bolt' : dataBolt,
+    'project': dataForm
+  }
+  $('#bolt-form').loadme(true);
+  $.post(t.attr('href'), data, function(json, textStatus, xhr) {
+    $('#bolt-form').loadme(false);
+    
+     //$.setFlash('success',json.msg);
+  },'json');
+})
+
+
+
+$(document).on("click","#bolt-projects-open",function (e){
+  e.preventDefault();
+
+  var t         = $(this);
+  
+  var dataBolt  = $('#bolt-builder').flowchart('getData');  
+  var dataForm  = $('#bolt-form').serializeObject();
+
+  var data = {
+    'bolt' : dataBolt,
+    'project': dataForm
+  }
+
+  $('#bolt-form').loadme(true);
+  $('#bolt-builder').loadme(true);
+  
+  $.post(t.attr('href'), data, function(json, textStatus, xhr) {
+    $('#bolt-builder').flowchart('setData',json.bolt);
+    $.form.set(json,'projects');
+    
+    $('#bolt-form').loadme(false);
+    $('#bolt-builder').loadme(false);
+
+    $.operatorI = Object.keys(json.bolt.operators).length + 1;
+
+    console.log($.operatorI);
+  },'json');
+})
+
+
+
+  $(document).on("click",".btn-tpl",function (e){
+    e.preventDefault();
+
+    var t      = $(this);
+    var data   = {};
+    var target = $(t.data('target'));
+
+    target.loadme(true);
+    target.html('');
+    $.post(t.attr('href'), data, function(json, textStatus, xhr) {
+      $.each(json, function(key, val){
+        var tpl = $.mustache(t.data('tpl'),val);
+        $(t.data('target')).append(tpl);
+      });
+
+      target.loadme(false);
+    },'json');
+  })
+
+
+
+
+
+    var $draggableOperators = $('.draggable_operator');
+    
+    function getOperatorData($element) {
+      var nbInputs = parseInt($element.data('nb-inputs'));
+      var nbOutputs = parseInt($element.data('nb-outputs'));
       var data = {
-        bolt : dataBolt,
-        project: dataForm
-      }
-
-      console.log(data);
-      console.log(dataBolt);
-
-      $.post(t.attr('href'), data, function(json, textStatus, xhr) {
-         $.setFlash('success',json.msg);
-      },'json');
-    })
-
-
-
-    $(document).on("click","#bolt-projects-open",function (e){
-      e.preventDefault();  
-      var t         = $(this);
+        properties: {
+          title: $element.text(),
+          inputs: {},
+          outputs: {}
+        } 
+      };
       
-      var dataBolt  = $('#bolt-builder').flowchart('getData');  
-      var dataForm  = $('#bolt-form').serializeObject();
-
-      var data = {
-        bolt : dataBolt,
-        project: dataForm
+      var i = 0;
+      for (i = 0; i < nbInputs; i++) {
+        data.properties.inputs['input_' + i] = {
+          label: 'Input ' + (i + 1)
+        };
       }
-
-      $.post(t.attr('href'), data, function(json, textStatus, xhr) {
-         $('#bolt-builder').flowchart('setData',json.bolt); 
-      },'json');
-    })
-
-
-
-      $(document).on("click",".btn-tpl",function (e){
-        e.preventDefault();  
-        var t     = $(this);
-        var data  = {};
-
-        $.post(t.attr('href'), data, function(json, textStatus, xhr) {
-            $(t.data('target')).html('');
-            $.each(json, function(key, val){
-                var tpl = $.mustache(t.data('tpl'),val);
-                $(t.data('target')).append(tpl);
-            })
-        },'json');
+      for (i = 0; i < nbOutputs; i++) {
+        data.properties.outputs['output_' + i] = {
+          label: 'Output ' + (i + 1)
+        };
+      }
+      
+      return data;
+    }
+    
+    var operatorId = 0;
         
-      })
+    $draggableOperators.draggable({
+        cursor: "move",
+        opacity: 0.7,
+        helper: function(e) {
+          var $this = $(this);
+          var data = getOperatorData($this);
+          return $flowchart.flowchart('getOperatorElement', data);
+        },
+        stop: function(e, ui) {
+            var $this = $(this);
+            var elOffset = ui.offset;
+            var containerOffset = $container.offset();
+            if (elOffset.left > containerOffset.left &&
+                elOffset.top > containerOffset.top && 
+                elOffset.left < containerOffset.left + $container.width() &&
+                elOffset.top < containerOffset.top + $container.height()) {
+
+                var flowchartOffset = $flowchart.offset();
+
+                var relativeLeft = elOffset.left - flowchartOffset.left;
+                var relativeTop = elOffset.top - flowchartOffset.top;
+
+                var positionRatio = $flowchart.flowchart('getPositionRatio');
+                relativeLeft /= positionRatio;
+                relativeTop /= positionRatio;
+                
+                var data = getOperatorData($this);
+                data.left = relativeLeft;
+                data.top = relativeTop;
+                $flowchart.flowchart('createOperator', 'op_' + operatorId, data);
+                operatorId++;
+            }
+        }
+    });
     
-    
+
+
+
+
+
+
+
+
+
+
+
 })
