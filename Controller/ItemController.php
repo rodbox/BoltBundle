@@ -19,6 +19,24 @@ use RB\BoltBundle\Form\ItemType;
 class ItemController extends Controller
 {
     
+      /**
+      * @Route("/upd_by_project",name="upd_by_project")
+      */
+      public function upd_by_projectAction(Request $request)
+      {
+        $list = [];
+
+        $r    = [
+            'infotype' => 'success',
+            'msg'      => 'action : ok',
+            'app'      => $this->renderView('::base.html.twig', [
+            'list' => $list
+            ])
+        ];
+
+        return new JsonResponse($r);
+      }
+
     /**
     * @Route("/load/{name}",name="bolt_item_load", options={"expose"=true})
     */
@@ -132,7 +150,7 @@ class ItemController extends Controller
 
         return $this->render('RBBoltBundle:item:new.html.twig', [
             'item' => $item,
-            'form'                      => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 

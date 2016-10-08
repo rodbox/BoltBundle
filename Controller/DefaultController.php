@@ -16,7 +16,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $formItem       = $this->createForm('RB\BoltBundle\Form\ItemType');
+        $formItem       = $this->createForm('RB\BoltBundle\Form\ItemProjectsType');
         $formProjects   = $this->createForm('RB\BoltBundle\Form\ProjectsType');
         
         return $this->render('RBBoltBundle:Default:index.html.twig',[

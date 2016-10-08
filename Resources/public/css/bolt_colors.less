@@ -1,0 +1,52 @@
+.mixin-loop (@i:1) when (@i <= length(@colors)){
+	@name: extract(@names,@i);
+	@color: extract(@colors,@i);
+	@icon: extract(@icons,@i);
+
+	.flowchart-operator{
+		&.type-@{name}{
+
+			&,
+			.flowchart-operator-connector-small-arrow,
+			.flowchart-operator-connector-arrow{
+				border-color:@color;
+			}
+
+			.flowchart-operator-inputs{}
+
+			&.selected{
+				-webkit-box-shadow: 0 0 0 6px fade(@color,20%) !important;
+				box-shadow: 0 0 0 6px fade(@color,20%) !important;
+				border-color: darken(@color, 10%) !important;
+
+				.flowchart-operator-connector-small-arrow,
+				.flowchart-operator-connector-arrow{
+					border-color: darken(@color, 10%);
+				}
+			}
+		}
+	}
+	form[data-form-filter-content="@{name}"]{
+		border-top: 5px solid @color !important;
+
+		.nav-link.active{
+			border-top: 2px solid @color !important;
+		}
+	}
+		
+	.flowchart-operator.type-@{name},
+	form[data-form-filter-content="@{name}"],
+	.card-@{name}{
+		.flowchart-operator-title,
+		.icon-type{
+			&:before{
+				color:@color !important;
+				content: @icon !important;
+			}
+		}
+	}
+
+	.mixin-loop(@i + 1);
+}
+
+.mixin-loop();

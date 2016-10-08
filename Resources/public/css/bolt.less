@@ -1,3 +1,6 @@
+@import 'bolt_vars.less';
+@import 'bolt_colors.less';
+
 .flowchart-operator-connector-label {
     font-size: 0.7rem !important;
 }
@@ -5,8 +8,8 @@
 .card-item{
 	border: 0px !important;
 	padding: 0.5rem !important;
-	border-radius: 0px !important;
 	margin: 1rem !important;
+	z-index: 1000;
 
 	.card-block{
 		padding: 0px !important;
@@ -21,111 +24,121 @@
 	font-size: 0.7rem !important;
 }
 
-.flowchart-operator{
-	border-top-color: transparent !important; 
-	border-bottom-color: transparent !important; 
-
+.flowchart-operator {
+	border: 4px solid #ccc;
+	border-radius: 0.3rem !important;
+	border-top: 0px !important; 
+	border-bottom: 0px !important; 
 	.flowchart-operator-connector{
 		top: -2px !important;
 	}
-	
+	.flowchart-operator-connector-arrow{
+		margin-top: -1px;
+	}
+	.flowchart-operator-connector-small-arrow{
+		display: none !important;
+	}
 	.flowchart-operator-inputs{
-
-		.flowchart-operator-connector-small-arrow{
-			left: -1px !important;
-    		top: 4px;
-		}
-		
 		.flowchart-operator-connector-arrow{
-			left:0px !important;
-			top: inherit !important;
+			left:-4px !important;
 		}
 	}
 
-	&.selected{
-		-webkit-box-shadow: 0 0 0 5px rgba(0,0,0,0.10);
-		box-shadow: 0 0 0 5px rgba(0,0,0,0.10);
-		border-color: inherit !important;
-	}
 
 	.flowchart-operator-inputs-outputs {
 	    margin-bottom: 0rem !important;
-	    margin-top: 0rem !important;
+
 	}
 	.flowchart-operator-title{
 		background-color: transparent;
 		border-bottom-color: transparent;
 	}
 	&.type-function{
-		
+		background-color: #000;
+
 		&,
+		.flowchart-operator-connector-label,
 		.flowchart-operator-title{
-			background-color: #000 !important;
-			color:#fff;
-			border-color: #000;
+			color:#fff !important;
+		}
+		.flowchart-operator-title{
+			&:before{
+				color:#fff !important;
+			}
+		}
+		.flowchart-operator-inputs{
+			.flowchart-operator-connector-arrow{
+				display: none !important;
+				left:-4px !important;
+			}
+		
+			
+
+			&,
+			.flowchart-operator-connector-small-arrow,
+			.flowchart-operator-connector-arrow{
+				border-color:#000 !important;
+			}
+
+			.flowchart-operator-inputs{
+				
+			}
 		}
 
-		&,
-		.flowchart-operator-connector-small-arrow,
-		.flowchart-operator-connector-arrow{
-			border-color:#000 !important;
-		}
-
+		.flowchart-operator-outputs,
 		.flowchart-operator-inputs{
 			.flowchart-operator-connector-small-arrow,
 			.flowchart-operator-connector-arrow{
 				border-bottom-color: transparent !important;
-    			border-top-color:  transparent !important;
+				border-top-color:  transparent !important;
 			}
 		}
-	}
-
-	&.type-free{
-		&,
-		.flowchart-operator-connector-small-arrow,
-		.flowchart-operator-connector-arrow{
-			border-color:#F76C51 !important;
-		}
-
-		.flowchart-operator-inputs{
-
-		}
-	}
-
-
-	.flowchart-operator-outputs,
-	.flowchart-operator-inputs{
-		.flowchart-operator-connector-small-arrow,
-		.flowchart-operator-connector-arrow{
-			border-bottom-color: transparent !important;
-			border-top-color:  transparent !important;
-		}
-	}
 		.flowchart-operator-connector-small-arrow{
 			border-left-color:#000 !important;
 		}
+	}	
+
+	
+}
+.flowchart-operator{
+	.flowchart-operator-connector-small-arrow,
+	.flowchart-operator-connector-arrow{
+		border-bottom-color: transparent !important;
+		border-top-color:  transparent !important;
+	}
 }
 
 #sidebar-inner,
-#sidebar-left,
 #bolt-content{
 	padding-top: 0.3rem;
-	overflow: hidden !important;
+	overflow: hidden;
 }
+
 #sidebar-left{
-	background-color: fade(#000,5%) !important;
 	height: calc(~"100vh - 54px");
-	overflow-y: auto !important;
-}
-#sidebar-inner{
-	background-color: fade(#000,2%) !important;
-	overflow-y: auto !important;
 }
 #sidebar-inner,
 #bolt-content{
 	height: calc(~"100vh - 99px");
 }
 
+.header-without{
+	#sidebar-left{
+		height: 100vh;
+	}
+	#sidebar-inner,
+	#bolt-content{
+		height: calc(~"100vh - 42px");
+	}
+
+}
+
+#sidebar-inner{
+	background-color: fade(#000,5%) !important;
+}
+#bolt-builder{
+	overflow: hidden;
+}
 label{
 	.sm;
 	display: block;
@@ -133,10 +146,10 @@ label{
 	margin-bottom: 0.2rem;
 }
 
-input[type="text"],
-input[type="url"],
-select,
-textarea {
+input[type="text"]:not(.form-control),
+input[type="url"]:not(.form-control),
+select:not(.form-control),
+textarea:not(.form-control) {
     border: 1px solid rgba(0, 0, 0, 0.1);
     color: inherit;
     font: inherit;
@@ -145,5 +158,44 @@ textarea {
 }
 
 #bolt-builder{
-	background-image: url("http://cdn.rodbox.fr/img/graphy.png");
+	background: fade(#fff, 50%)  url("http://cdn.rodbox.fr/img/graphy.png") !important;
+}
+
+.form-filter-content{
+	display: none;
+}
+
+@color: fade(#000,10%);
+.nav-item .nav-link{
+	padding: 0.5em !important;
+}
+
+.nav-tabs.nav-tabs-light{
+	border-bottom: 1px solid @color !important;
+	.nav-item .nav-link.active{
+    	background: transparent none repeat scroll 0 0;
+    	border: 1px solid @color !important;
+    	border-bottom: 0px !important;
+	}
+}
+
+
+
+.item-form{
+	padding-top: 1rem !important;
+}
+
+.flowchart-operator-title,
+.icon-type{
+	&:before{
+		font-family: FontAwesome;
+		font-style: normal !important;
+		font-weight: normal !important;
+	}
+}
+
+.flowchart-operator-title{
+	&:before{
+		margin-right: 0.3rem !important;
+	}
 }

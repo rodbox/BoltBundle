@@ -1,4 +1,4 @@
-{% extends 'RBAdminBundle::index.html.twig' %}
+{% extends 'RBAdminBundle::index-light.html.twig' %}
 
 {% block title %}{% endblock title %}
 
@@ -7,29 +7,30 @@
 {% block breadcrumb %}{% endblock breadcrumb %}
 
 {% block body %}
-	<div id="sidebar-left" class="col-xs-12 col-md-1 ">
+	<div id="sidebar-left" class="col-xs-4 col-md-2 col-lg-1 bg-1-d-1  bg-1-d-1">
 		{% include 'RBBoltBundle:Items:Menu/menu-item.html.twig' %}
 	</div>
-	<div id="" class="col-xs-12 col-md-11  p-c-t">
+	<div id="" class="col-xs-8 col-md-10 col-lg-11  ">
 		{% include 'RBBoltBundle:Items:Menu/menu-projects.html.twig' %}
 		<div id="bolt-content" class="col-xs-12 col-md-12  p-c-v" style="padding-left:0px !important; padding-right:0px !important;">
 			<!-- BEGIN TABSCONTENT  -->
 			<div class="tab-content">
 			    <div id="project-setting-tab-1" class="tab-pane active">
 					<div id="sidebar-inner" class="col-xs-12 col-md-3 ">
-						<h4><strong>setting</strong></h4>
-						{{ form(formItem,{attr:{id:'item-form','class':'form-live item-form'}}) }}
+						{% include 'RBBoltBundle:Items:item-edit.html.twig' with {formItem:formItem} only %}
 					</div>
 					<div  class="col-xs-12 col-md-8 ">
-						<div class="btn-group btn-group-sm" style="position:fixed; z-index:5000;">
-        <button class="btn btn-default zoom-out"><i class="fa fa-minus-circle" aria-hidden="true"></i>
-</button>
-        <button class="btn btn-default reset">100</button>
-        <button class="btn btn-default zoom-in"><i class="fa fa-plus-circle" aria-hidden="true"></i>
-</button>
-      </div>
+						<div class=" m-c"  style="position:absolute; z-index:1000;">
+							<div class="btn-group btn-group-sm">
+						        <button class="btn btn-default zoom-out"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+						        <button class="btn btn-default reset">100</button>
+						        <button class="btn btn-default zoom-in"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+					    	</div>
+				    	    <div class="btn-group btn-group-sm">
+	        					<button id="delete_selected_button" role="button" class="btn btn-danger "><i class="fa fa-remove"></i></button>
+	      					</div>
+						</div>
 						<div id="bolt-builder" style="height:1500px; width:1500px; ">
-							
 						</div>
 					</div>
 			    </div>
@@ -41,4 +42,11 @@
 		</div>
 		{{ mustache_tpl('bolt_item','@RBBoltBundle:tpl:list-item.html.twig') }}
 	</div>
+	<noscript>
+  <style>
+    .simplebar, [data-simplebar-direction] {
+      overflow: auto;
+    }
+  </style>
+</noscript>
 {% endblock body %}

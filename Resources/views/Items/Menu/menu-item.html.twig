@@ -1,5 +1,7 @@
-<div class="btn-group">
-	<a href="{{path('bolt_item_new') }}" class="btn btn-default btn-modal" title="{{ 'route.bolt_item_new.title' | trans }}"><i class="fa fa-plus"></i></a>
-	<a href="{{path('bolt_item_expose') }}" class="btn btn-default btn-tpl autoclick" data-tpl="bolt_item" data-target="#items-list"><i class="fa fa-folder-o"></i></a>
+<div class="p-c-v app-menu">
+	<div class="btn-group btn-group-sm">
+		<a href="{{path('bolt_item_new') }}" class="btn btn-default btn-modal" title="{{ 'route.bolt_item_new.title' | trans }}"><i class="fa fa-plus"></i></a>
+		<a href="{{path('bolt_item_expose') }}" class="btn btn-default btn-tpl autoclick" data-tpl="bolt_item" data-target="#items-list"><i class="fa fa-folder-o"></i></a>
+	</div>
 </div>
 <div id="items-list" class=" p-c-t"></div>

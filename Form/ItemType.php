@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DatetimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -28,7 +29,12 @@ class ItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('name', TextType::class,[
+                'required'=> true,
+                'attr'=>[
+                    'class'=>''
+                ]
+                ])
             ->add('description', TextareaType::class,[
                 'required'=> false,
                 ])
@@ -46,93 +52,11 @@ class ItemType extends AbstractType
                 'class'=>'RBBoltBundle:Type',
                 'choice_label' => 'name',
                 'attr'         => [
+                    'class'     => 'formFilterContent',
+                    'data-cb'   => 'formFilterContent',
+                    'data-cb-app'=> 'bolt'
                 ]
-            ])
-            // META
-            ->add(
-                $builder->create('meta', FormType::class, array('by_reference' => 'meta'))
-                // FUNCTION
-                ->add(
-                    $builder->create('function', FormType::class, array('by_reference' => 'function'))
-                        ->add('function', TextareaType::class,[
-                            'required'=> false,
-                            'attr'=>[
-                                'class'=> 'for-type for-function'
-                            ]
-                        ])
-                )
-                // JSON
-                ->add(
-                    $builder->create('json', FormType::class, array('by_reference' => 'json'))
-                        ->add('url', UrlType::class,[
-                            'required'=> false,
-                            'attr'=>[
-                                'class'=> 'for-type for-json for-api'
-                            ]
-                        ])
-                        ->add('key', TextType::class,[
-                            'required'=> false,
-                            'attr'=>[
-                                'class'=> 'for-type for-json for-api'
-                            ]
-                        ])
-                        ->add('showkey', TextType::class,[
-                            'required'=> false,
-                            'attr'=>[
-                                'class'=> 'for-type for-json for-api'
-                            ]
-                        ])
-                )
-                // ROUTE
-                ->add(
-                    $builder->create('route', FormType::class, array('by_reference' => 'route'))
-                        ->add('route', RouteType::class,[
-                            'attr'=>[
-                                'class'=> 'for-type for-route'
-                            ]
-                        ])
-                )
-                // SERVICE
-                /**
-                * TODO : CREER le type
-                **/
-                ->add(
-                    $builder->create('service', FormType::class, array('by_reference' => 'service'))
-                        ->add('service', RouteType::class,[
-                            'attr'=>[
-                                'class'=> 'for-type for-route'
-                            ]
-                        ])
-                )
-                // DATA
-                ->add(
-                    $builder->create('DATA', FormType::class, array('by_reference' => 'DATA'))
-                        ->add('DATA', ChoiceType::class,[
-                            'choices'=>[],
-                            'multiple'=>true,
-                            'attr'=>[
-                                'class'=> 'for-type for-data'
-                            ]
-                        ])
-                        // folder
-                ->add(
-                    $builder->create('folder', FormType::class, array('by_reference' => 'folder'))
-                        ->add('folder', ChoiceType::class,[
-                            'choices'=>['dir_user'],
-                            'attr'=>[
-                                'class'=> 'for-type for-data'
-                            ]
-                        ])
-                )
-            ->add('submit', SubmitType::class, array(
-                'label' => 'action.save',
-                'attr' => array(
-                    'class' => 'save btn btn-success m-c-t show-on-change',
-                    'type'  => 'submit'
-                ),
-            ))
-            )
-
+            ]
         );
     }
     

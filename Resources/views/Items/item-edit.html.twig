@@ -1,0 +1,48 @@
+{{ form_start(formItem,{ action:path('upd_by_project'), attr:{id:'item-form','class':'form-live item-form'}}) }}
+    <h3 style="margin-bottom:1rem; padding-left:0.6rem;">
+        <div  class="text-muted ">e<span id="ref"></span>.</span></div>
+        <i class="icon-type"></i> <strong id="name"> - </strong>
+        <div id="type" class="text-muted"></span></div>
+         </h3>
+    <div class="clearfix"></div>
+    <div class="menu">
+        {{ form_row(formItem.submit.submit,{'attr':{'class':'btn btn-sm btn-success pull-right'}}) }}
+    </div>
+
+<!-- BEGIN NAVTABS : title  -->
+<ul class="nav nav-tabs nav-tabs-light" id="itemsetting">
+    <li class="nav-item ">
+        <a class="nav-link active" data-toggle="tab" href="#itemsetting-tab-1" aria-expanded="true"><i class="fa fa-info"></i></a>
+    </li>
+    <li class="nav-item ">
+        <a class="nav-link" data-toggle="tab" href="#itemsetting-tab-all" aria-expanded="false"><i class="fa fa-cog"></i></a>
+    </li>
+    
+    {% for key, meta in formItem.meta %}
+    <li class="nav-item form-filter-content form-filter-content-{{ key }}" data-form-filter-content="{{ key }}">
+        <a class="nav-link" data-toggle="tab" href="#itemsetting-tab-{{ key }}" aria-expanded="false"><i class="icon-type"></i> {{ key }}</a>
+    </li>
+    {% endfor %}
+</ul>
+<!-- END NAVTABS : title  -->
+<!-- BEGIN TABSCONTENT  -->
+<div class="tab-content">
+    <div id="itemsetting-tab-1" class="tab-pane active">
+	{{ form(formItem.base) }}
+    </div>
+	<div id="itemsetting-tab-all" class="tab-pane">
+	{{ form(formItem.all) }}
+    </div>
+	{% for key, meta in formItem.meta %}
+    <div id="itemsetting-tab-{{ key }}" class="tab-pane">
+		{{ form(meta) }}
+    </div>		
+    {% endfor %}
+	
+</div>
+<!-- END TABSCONTENT  -->
+
+
+
+
+{{ form_end(formItem) }}

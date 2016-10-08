@@ -1,24 +1,28 @@
-<form id="bolt-form" action="#" class="form-inline">
-<div class="menu pull-left">
-	<a href="{{path('bolt_projects_new') }}" class="btn btn-default btn-modal"  title="{{ 'route.bolt_projects_new.title' | trans }}"><i class="fa fa-plus"></i></a>
-	<a href="{{path('bolt_load') }}" id="bolt-projects-open" class="btn btn-default autoclick"  title="{{ 'route.bolt_projects_new.title' | trans }}"><i class="fa fa-folder-o"></i></a>
-   	<button id="delete_selected_button" role="button" class="btn btn-danger "><i class="fa fa-remove"></i></button>
-	<div class="input-group" style="width:150px; display:inline-flex">
-		<input type="text" class="form-control" name="name" value="{{ project.name | default('default') }}">
-  		<span class="input-group-btn">
-			<a href="{{path('bolt_save') }}" id="bolt-projects-save" class="btn btn-default"  title="{{ 'route.bolt_projects_save.title' | trans }}"><i class="fa fa-floppy-o"></i></a>
-	    </span>
+  <div class="app-menu bg-1-d-1">
+  <form id="bolt-form" action="#" class="form-inline">
+    <div class="btn-group btn-group-sm pull-left">
+      <a href="{{path('bolt_projects_new') }}" class="btn btn-default btn-modal"  title="{{ 'route.bolt_projects_new.title' | trans }}"><i class="fa fa-plus"></i></a>
+      <a href="{{path('bolt_load') }}" id="bolt-projects-open" class="btn btn-default autoclick"  title="{{ 'route.bolt_projects_new.title' | trans }}"><i class="fa fa-folder-o"></i></a>
     </div>
-</div>
+      <div class="input-group" style="width:150px; display:inline-flex">
+        <input type="text" class="form-control" name="name" value="{{ project.name | default('default') }}" style="height: 28px; padding: 0.3rem">
+          <span class="">
+          <a href="{{path('bolt_save') }}" id="bolt-projects-save" class="btn btn-default btn-sm"  title="{{ 'route.bolt_projects_save.title' | trans }}"><i class="fa fa-floppy-o"></i></a>
+          </span>
+        </div>
+ 
 
-<!-- BEGIN NAVTABS : title  -->
-<ul class="nav nav-tabs pull-right" id="project-setting">
-    <li class="nav-item ">
-        <a class="nav-link active" data-toggle="tab" href="#project-setting-tab-1" aria-expanded="true">Project</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#project-setting-tab-2" aria-expanded="false"><i class="fa fa-cog"></i> </a>
-    </li>
-</ul>
-<!-- END NAVTABS : title  -->
-</form>
+    <!-- BEGIN NAVTABS : title  -->
+    <ul class="nav nav-tabs pull-right" id="project-setting" style="position: absolute; right: 0.3rem; top:0.3rem">
+        <li class="nav-item ">
+            <a class="nav-link active" data-toggle="tab" href="#project-setting-tab-1" aria-expanded="true">Project</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link c-5" data-toggle="tab" href="#project-setting-tab-2" aria-expanded="false"><i class="fa fa-cog"></i> </a>
+        </li>
+    </ul>
+    <!-- END NAVTABS : title  -->
+  </form>
+
+  <div class="clearfix"></div>
+   </div>
