@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DatetimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -32,6 +33,7 @@ class ItemType extends AbstractType
             ->add('name', TextType::class,[
                 'required'=> true,
                 'attr'=>[
+                    'autofocus'=>'true',
                     'class'=>''
                 ]
                 ])
@@ -47,6 +49,8 @@ class ItemType extends AbstractType
                 'choices'=>['default'=>'default']
                 ])
             ->add('multiple')
+            ->add('lockme')
+            ->add('meta')
             ->add('type', EntityType::class, [
                 'required'=> false,
                 'class'=>'RBBoltBundle:Type',
@@ -65,6 +69,7 @@ class ItemType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+
         $resolver->setDefaults(array(
             'data_class' => 'RB\BoltBundle\Entity\Item'
         ));

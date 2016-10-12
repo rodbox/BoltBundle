@@ -1,6 +1,6 @@
 <div class="card card-item card-{{ type.name }}" style="border-left:5px solid {{ type.color }} !important;" data-description="" data-container="body" data-toggle="popover" data-placement="right" data-content="{{ description }}">	
 	<div class="card-block">
-		<h4 class="card-title"><a href="#" class="card-link create-item c-1 " data-type="{{ type.name }}" data-name="{{ name }}" data-ref="e{{id}}"><div class="text-muted sm">e{{ id }}.</div><i class="icon-type"></i> <strong>{{ name }}</strong> 
+		<h4 class="card-title"><a href="http://rodbox.fr/app_dev.php/bi/item/{{ id }}/edit" class="card-link create-item c-1 btn-modal" data-modal="modalSm" data-type="{{ type.name }}" title="item : {{ name }} - {{type.name}}" data-name="{{ name }}" data-ref="e{{id}}"><div class="text-muted sm">e{{ id }}.</div><i class="icon-type"></i> <strong>{{ name }}</strong> 
 			<div class="text-muted sm ">{{ type.name }}</div></a></h4>
 	</div>
 </div>

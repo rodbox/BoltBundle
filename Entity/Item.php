@@ -52,10 +52,16 @@ class Item
     /**
      * @var bool
      *
-     * @ORM\Column(name="multiple", type="boolean", nullable=true)
+     * @ORM\Column(name="multiple", type="boolean", nullable=true, options={"default" = false})
      */
     private $multiple;
 
+    /**
+     * @var \stdClass
+     *
+     * @ORM\Column(name="meta", type="array", nullable=true)
+     */
+    private $meta;
 
 
      /**
@@ -70,6 +76,17 @@ class Item
      * @ORM\Column(name="projects", type="object", nullable=true)
      */
     private $projects;
+
+
+
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="lockme", type="boolean", nullable=true , options={"default" = null})
+     */
+    private $lockme;
+
 
 
 
@@ -204,6 +221,30 @@ class Item
     }
 
     /**
+     * Set meta
+     *
+     * @param array $meta
+     *
+     * @return Item
+     */
+    public function setMeta($meta)
+    {
+        $this->meta = $meta;
+
+        return $this;
+    }
+
+    /**
+     * Get meta
+     *
+     * @return array
+     */
+    public function getMeta()
+    {
+        return $this->meta;
+    }
+
+    /**
      * Set projects
      *
      * @param \stdClass $projects
@@ -225,6 +266,30 @@ class Item
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    /**
+     * Set lockme
+     *
+     * @param boolean $lockme
+     *
+     * @return Item
+     */
+    public function setLockme($lockme)
+    {
+        $this->lockme = $lockme;
+
+        return $this;
+    }
+
+    /**
+     * Get lockme
+     *
+     * @return boolean
+     */
+    public function getLockme()
+    {
+        return $this->lockme;
     }
 
     /**

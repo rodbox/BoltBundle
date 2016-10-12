@@ -10,12 +10,8 @@ services:
             - { name: twig.extension }
     rb_bolt.services:
         class: RB\BoltBundle\Services\BoltService
-        arguments: ["@service_container", "@session", "@router"]
+        arguments: ["@service_container", "@session", "@router", "@doctrine"]
 
-    rb_bolt.route_type:
-        class: RB\Bolt\Form\Type\RouteType
-        arguments: ["@service_container", "@session", "@router"]
-        calls:
-          - [setContainer, ['@service_container']]
-        tags:
-            - { name: form.type, alias: 'container' }
+    rb_bolt.admin.services:
+        class: RB\BoltBundle\Services\BoltAdminService
+        arguments: ["@service_container", "@session", "@router", "@doctrine"]

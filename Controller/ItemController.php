@@ -24,14 +24,55 @@ class ItemController extends Controller
       */
       public function upd_by_projectAction(Request $request)
       {
-        $list = [];
+        $item_projects = $request->request->get("item_projects");
+        $name          = $item_projects["base"]["name"];
+        $type          = $item_projects["base"]["type"];
+        $em            = $this->getDoctrine()->getManager();
+
+
+        $type = $em
+          ->getRepository('RBBoltBundle:Type')
+          ->find($type);
+        
+        $meta          = (isset($item_projects["meta"][$type->getName()]))?$item_projects["meta"][$type->getName()]:[];
+
+        $item          = $em
+          ->getRepository('RBBoltBundle:Item')
+          ->findOneByName($name);
+        
+        $item->setMeta($meta);
+        $item->setType($type);
+        $item->setMultiple(true); 
+       // $item->setLock(true);
+        /* 
+        $item->setDescription($item_projects['base']['description']);
+        $item->setContext($item_projects['base']['context']);
+        $item->setView($item_projects['base']['view']);
+        
+*/
+        $em->persist($item);
+
+        $em->flush();
+
+      /*  $base          = $item_projects["base"];
+        $all           = $item_projects["all"];
+        $meta          = $item_projects["meta"][$base["type"]];
+        
+        $em            = $this->getDoctrine()->getManager();
+        $session       = $request->getSession();*/
+/*
+        $Item          = $em
+            ->getRepository('RBBoltBundle:Item')
+            ->findOneByName($name);
+
+
+*/
+       
 
         $r    = [
             'infotype' => 'success',
-            'msg'      => 'action : ok',
-            'app'      => $this->renderView('::base.html.twig', [
-            'list' => $list
-            ])
+            'msg'      => 'Item e'.$item->getId().' enregistré',
+            'app'      => $name
         ];
 
         return new JsonResponse($r);
@@ -133,16 +174,22 @@ class ItemController extends Controller
     {
         $item = new Item();
         $form = $this->createForm('RB\BoltBundle\Form\ItemType', $item);
+
+        $item->setLockme(true);
+        $item->setMeta([]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+
+        if ($request->isXmlHttpRequest() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($item);
             $em->flush();
 
             $r = [
                 'infotype' => 'success',
-                'msg'      => 'ok'
+                'msg'      => 'ok',
+                'autoclose'=> true,
+                'click'    => ['#bolt_items_load']
             ];
 
             return new JsonResponse($r);
@@ -178,7 +225,6 @@ class ItemController extends Controller
      * Displays a form to edit an existing Item entity.
      *
      * @Route("/{id}/edit", name="bolt_item_edit")
-     * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Item $item)
     {

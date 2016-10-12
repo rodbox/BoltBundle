@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\GroupType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -30,6 +31,17 @@ class ItemProjectsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $this->bolt = $options['bolt'];
+        
+        $this->routes = $this->bolt->routes();
+        $this->services = $this->bolt->services();
+        $this->init = $this->bolt->init();
+        $this->folder = $this->bolt->folder();
+        $this->entitys = $this->bolt->entitys();
+        $this->projects = $this->bolt->projects();
+
+
         $builder
          // base
             ->add(
@@ -39,34 +51,46 @@ class ItemProjectsType extends AbstractType
                         'class'=>''
                     ]
                     ))
-                ->add('name', HiddenType::class,[
+                ->add('name', TextType::class,[
                     'required'=> true,
                     'attr'=>[
-                        'disabled'=>true,
-                        'class'=>''
+                        'class'=>'form-control'
                     ]
                     ])
                 ->add('description', TextareaType::class,[
                     'required'=> false,
+                    'attr' => [
+                        'rows'=>5,
+                        'class'=>'form-control'
+                        ]
                     ])
                 ->add('context', ChoiceType::class,[
                     'required'=> false,
-                    'choices'=>['default'=>'default']
+                    'choices'=>['default'=>'default'],
+                    'attr'=>[
+                        'class'=>'form-control'
+                    ]
                     ])
                 ->add('view', ChoiceType::class,[
                     'required'=> false,
-                    'choices'=>['default'=>'default']
+                    'choices'=>['default'=>'default'],
+                    'attr'=>[
+                        'class'=>'form-control'
+                    ]
                     ])
                 ->add('multiple', CheckboxType::class,[
                     'required'=>false
                     ])
+                ->add('lockme', CheckboxType::class,[
+                    'required'=>false
+                    ])
                 ->add('type', EntityType::class, [
-                    'required'=> false,
+
                     'class'=>'RBBoltBundle:Type',
                     'choice_label' => 'name',
                     'attr'         => [
-                        'disabled'=>true,
-                        'class'     => 'formFilterContent',
+           
+                        'class'     => 'formFilterContent form-control',
                         'data-cb'   => 'formFilterContent',
                         'data-cb-app'=> 'bolt'
                     ]
@@ -77,13 +101,14 @@ class ItemProjectsType extends AbstractType
                 $builder->create('all', FormType::class, array(
                     'by_reference' => 'all',
                     'attr'         => [
-                        'class'=>''
+                        'class'    =>''
                     ]
                     ))
                 // hook
                         ->add('hook', NumberType::class,[
                             'required'=> false,
                             'attr'=>[
+                                'type'=>'number',
                                 'min' => 0,
                                 'max' => 5,
                                 'class'=> ''
@@ -101,12 +126,7 @@ class ItemProjectsType extends AbstractType
                     ))
                 // FUNCTION
                 ->add(
-                    $builder->create('function', FormType::class, array(
-                        'by_reference' => 'function',
-                        'attr'         => [
-                            'class'=>''
-                        ]
-                        ))
+                    $builder->create('function', FormType::class, ["inherit_data" => true])
                         ->add('pointer_id', TextType::class,[
                             'required'=> false,
                             'attr'=>[
@@ -166,25 +186,80 @@ class ItemProjectsType extends AbstractType
                         ]
                         ))
                         ->add('route', RouteType::class,[
+                            'required'=> false,
+                            'choices'=>$this->routes,
                             'attr'=>[
                                 'class'=> 'for-type for-route'
                             ]
                         ])
                 )
                 // END: ROUTE
+                // entity
+                ->add(
+                    $builder->create('entity', FormType::class, array(
+                        'required'=> false,
+                        'by_reference' => 'entity',
+                        'attr'         => [
+                            'class'=>''
+                        ]
+                        ))
+                        ->add('entity', ChoiceType::class,[
+                            'required'=> false,
+                            'choices'=>$this->entitys,
+                            'attr'=>[
+                                'class'=> 'for-type for-entity'
+                            ]
+                        ])
+                )
+                // END: entity
                 
                 // SERVICE
-                /**
-                * TODO : CREER le ServiceType
-                **/
                 ->add(
                     $builder->create('service', FormType::class, array(
+                        'required'=> false,
                         'by_reference' => 'service',
                         'attr'         => [
                             'class'=>''
                         ]
                         ))
-                        ->add('service', RouteType::class,[
+                        ->add('service', ChoiceType::class,[
+                            'required'=> false,
+                            'choices'=> $this->services,
+                            'attr'=>[
+                                'class'=> 'for-type for-route'
+                            ]
+                        ])
+                )
+                // END : SERVICE
+                // FOLDER
+                ->add(
+                    $builder->create('folder', FormType::class, array(
+                        'required'=> false,
+                        'by_reference' => 'folder',
+                        'attr'         => [
+                            'class'=>''
+                        ]
+                        ))
+                        ->add('folder', ChoiceType::class,[
+                            'required'=> false,
+                            'choices'=> $this->folder,
+                            'attr'=>[
+                                'class'=> 'for-type for-route'
+                            ]
+                        ])
+                )
+                // END : FOLDER
+                ->add(
+                    $builder->create('service', FormType::class, array(
+                        'required'=> false,
+                        'by_reference' => 'service',
+                        'attr'         => [
+                            'class'=>''
+                        ]
+                        ))
+                        ->add('service', ChoiceType::class,[
+                            'required'=> false,
+                            'choices'=> $this->services,
                             'attr'=>[
                                 'class'=> 'for-type for-route'
                             ]
@@ -193,6 +268,7 @@ class ItemProjectsType extends AbstractType
                 // DATA
                 ->add(
                     $builder->create('data', FormType::class, array(
+                        'required'=> false,
                         'by_reference' => 'data',
                         'attr'         => [
                             'class'=>''
@@ -205,12 +281,14 @@ class ItemProjectsType extends AbstractType
                             ]
                         ])
                         ->add('filter-action', ChoiceType::class,[
+                            'required'=> false,
                             'choices'=>['url','mail','line'],
                             'attr'=>[
                                 'class'=> 'for-type for-data'
                             ]
                         ])
                         ->add('data', ChoiceType::class,[
+                            'required'=> false,
                             'choices'=>[],
                             'multiple'=>true,
                             'attr'=>[
@@ -222,6 +300,7 @@ class ItemProjectsType extends AbstractType
                 // free
                 ->add(
                     $builder->create('free', FormType::class, array(
+                        'required'=> false,
                         'by_reference' => 'free',
                         'attr'         => [
                             'class'=>''
@@ -236,6 +315,48 @@ class ItemProjectsType extends AbstractType
                        
                 )
                 // END free
+                // init
+                ->add(
+                    $builder->create('init', FormType::class, array(
+                        'required'=> false,
+                        'by_reference' => 'init',
+                        'attr'         => [
+                            'class'=>''
+                        ]
+                        ))
+                        ->add('init', ChoiceType::class,[
+                            'choices'=>$this->init,
+                            'multiple'=>true,
+                            'expanded'=>true,
+                            'required'=> false,
+                            'attr'=>[
+                                'class'=>''
+                            ]
+                        ])
+                       
+                )
+                // END init
+                // projects
+                ->add(
+                    $builder->create('bolt_project', FormType::class, array(
+                        'required'=> false,
+                        'by_reference' => 'Project',
+                        'attr'         => [
+                            'class'=>''
+                        ]
+                        ))
+                        ->add('projects', ChoiceType::class,[
+                            'choices'=>$this->projects,
+                            'multiple'=>true,
+                            'expanded'=>true,
+                            'required'=> false,
+                            'attr'=>[
+                                'class'=>''
+                            ]
+                        ])
+                       
+                )
+                // END projects
 
                 )
                 ->add(
@@ -260,8 +381,10 @@ class ItemProjectsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-       /* $resolver->setDefaults(array(
+
+        $resolver->setRequired('bolt');
+        $resolver->setDefaults(array(
             'data_class' => 'RB\BoltBundle\Entity\Item'
-        ));*/
+        ));
     }
 }

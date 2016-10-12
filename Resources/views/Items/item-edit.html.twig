@@ -28,21 +28,21 @@
 <!-- BEGIN TABSCONTENT  -->
 <div class="tab-content">
     <div id="itemsetting-tab-1" class="tab-pane active">
-	{{ form(formItem.base) }}
+        {% for item in formItem.base %}
+	       {{ form_row(item) }}
+        {% endfor %}
     </div>
 	<div id="itemsetting-tab-all" class="tab-pane">
-	{{ form(formItem.all) }}
+    	{% for item in formItem.all %}
+           {{ form_row(item) }}
+        {% endfor %}
     </div>
 	{% for key, meta in formItem.meta %}
     <div id="itemsetting-tab-{{ key }}" class="tab-pane">
-		{{ form(meta) }}
+		{{ form_row(meta) }}
     </div>		
     {% endfor %}
 	
 </div>
 <!-- END TABSCONTENT  -->
-
-
-
-
 {{ form_end(formItem) }}

@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
+use Symfony\Component\Filesystem\Filesystem;
 /**
 * @Route("/admin/bolt",name="bolt")
 */
@@ -21,6 +23,9 @@ class AdminBoltController extends Controller
         $project = $request->request->get('project',[]);
 
 
+       
+        
+
         $em      = $this->getDoctrine()->getManager();
         $projects = $em
           ->getRepository('RBBoltBundle:Projects')
@@ -31,39 +36,51 @@ class AdminBoltController extends Controller
         /* END SERVICE :  rb.serializer */
 
 
-    	return new JsonResponse($project);
-	}
+        return new JsonResponse($project);
+    }
 
 
-	/**
-	* @Route("/save",name="bolt_save")
-	*/
-	public function saveAction(Request $request)
+    /**
+    * @Route("/save",name="bolt_save")
+    */
+    public function saveAction(Request $request)
     {
         
-        $bolt = $request->request->get('bolt',[]);
-        $project = $request->request->get('project',[]);
+        $bolt     = $request->request->get('bolt',[]);
+        $project  = $request->request->get('project',[]);
+        $hydrate  = $request->request->get('hydrate',[]);
 
+        $dir_bolt = $this->container->getParameter('dir_bolt');
 
-        $em      = $this->getDoctrine()->getManager();
-        $project = $em
+        /* SERVICE : rb_file */
+        file_put_contents($dir_bolt.'/hy.json', json_encode($hydrate,JSON_PRETTY_PRINT));
+        //$toJson = $this->get('rb_file')->toJson($hydrate,$dir_bolt.'/hy.json');
+        /* END SERVICE :  rb_file */
+
+        $em       = $this->getDoctrine()->getManager();
+        $project  = $em
           ->getRepository('RBBoltBundle:Projects')
           ->findOneByName($project['name']);
 
         $project->setBolt($bolt);
         $em->persist($project);
         $em->flush();
+
+
+        /* SERVICE : rb_bolt.admin.service */
+        $export = $this->get('rb_bolt.admin.services')->export($bolt,$project);
+        /* END SERVICE :  rb_bolt.admin.service */
         
-       	$list = [];
+        $list = [];
 
         $r    = [
-    	    'infotype' => 'success',
-            'msg'      => 'action : ok',
-    	    'app'      => $this->renderView('::base.html.twig', [
-            'list' => $list
-    	    ])
+            'infotype' => 'success',
+            'msg'      =>$dir_bolt.'/bolt-'.$project->getName().'.json',
+            'app'      => $this->renderView('::base.html.twig', [
+                'list' => $list
+            ])
         ];
 
-    	return new JsonResponse($r);
-	}
+        return new JsonResponse($r);
+    }
 }

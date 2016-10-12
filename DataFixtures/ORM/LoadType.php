@@ -53,6 +53,21 @@ class LoadType implements FixtureInterface
           'name'        => 'service',
           'description' => 'description.service',
           'color'       => '#DC3522'
+      ],
+      [
+          'name'        => 'group',
+          'description' => 'description.group',
+          'color'       => '#ffef00'
+      ],
+      [
+          'name'        => 'init',
+          'description' => 'description.init',
+          'color'       => '#4b1194'
+      ],
+      [
+          'name'        => 'bolt_project',
+          'description' => 'description.bolt_project',
+          'color'       => '#00ca2a'
       ]
     ];
 
@@ -62,8 +77,14 @@ class LoadType implements FixtureInterface
         'name'        => 'default',
         'description' => 'projet par default',
         'pointers'    => [],
-        'security'    => 'FREE',
-        'do'          => 'alert("default")'
+        'security'    => ['ROLE_USER'],
+        'do'          => 'alert("default")',
+        'data'        => [
+            'bolt'=>[
+                'start'=>[],
+                'item'=>[]
+            ]
+        ]
       ]
     ];
 
@@ -107,7 +128,11 @@ class LoadType implements FixtureInterface
         'context'     => 'default',
         'view'        => 'false',
         'multiple'    => false,
-        'projects'    => [$projectsObject['default']]
+        'lockme'        => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => [
+          'ref'=>'\\*\\'
+        ]
       ],
       [
         'name'        => 'user',
@@ -116,7 +141,11 @@ class LoadType implements FixtureInterface
         'context'     => 'default',
         'view'        => 'default',
         'multiple'    => false,
-        'projects'    => [$projectsObject['default']]
+        'lockme'        => true,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => [
+          'entity'=>''
+        ]
       ],
       [
         'name'        => 'json',
@@ -125,7 +154,20 @@ class LoadType implements FixtureInterface
         'context'     => 'default',
         'view'        => 'default',
         'multiple'    => false,
-        'projects'    => [$projectsObject['default']]
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => []
+      ],
+      [
+        'name'        => 'ZIP',
+        'type'        => $typesObject['service'],
+        'description' => 'compresse un fichier ou un dossier et retourne le chemin',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'        => true,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => []
       ],
       [
         'name'        => 'folder',
@@ -134,16 +176,57 @@ class LoadType implements FixtureInterface
         'context'     => 'default',
         'view'        => 'default',
         'multiple'    => false,
-        'projects'    => [$projectsObject['default']]
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => []
       ],
       [
-        'name'        => 'Alert',
+        'name'        => 'alert',
         'type'        => $typesObject['function'],
         'description' => 'une fonction alert',
         'context'     => 'default',
         'view'        => 'default',
         'multiple'    => false,
-        'projects'    => [$projectsObject['default']]
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => [
+          'function'=>'alert("toto de alert")'
+        ]
+      ],
+      [
+        'name'        => 'Send',
+        'type'        => $typesObject['function'],
+        'description' => 'send mail',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => [
+          'function'=>'alert("send mail")'
+        ]
+      ],
+      [
+        'name'        => 'Init',
+        'type'        => $typesObject['init'],
+        'description' => 'une initialisation',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => []
+      ],
+      [
+        'name'        => 'group',
+        'type'        => $typesObject['group'],
+        'description' => 'un groupe',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => []
       ]
     ];
 
@@ -155,6 +238,8 @@ class LoadType implements FixtureInterface
       $item->setType($itemInfo['type']);
       $item->setView($itemInfo['view']);
       $item->setMultiple($itemInfo['multiple']);
+      $item->setLockme($itemInfo['lockme']);
+      $item->setMeta($itemInfo['meta']);
       $item->setProjects($itemInfo['projects']);
 
       $em->persist($item);

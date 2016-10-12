@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use RB\BoltBundle\Form\ProjectsType;
 use RB\BoltBundle\Form\ItemType;
+
+use RB\BoltBundle\Entity\Projects;
+use RB\BoltBundle\Entity\Item;
 /**
 * @Route("/bolt")
 */
@@ -16,8 +19,17 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $formItem       = $this->createForm('RB\BoltBundle\Form\ItemProjectsType');
-        $formProjects   = $this->createForm('RB\BoltBundle\Form\ProjectsType');
+
+        /* SERVICE : router */
+        $bolt = $this->get('rb_bolt.admin.services');
+        /* END SERVICE :  router */
+
+        $data = [
+            'bolt'        => $bolt
+        ];
+
+        $formItem       = $this->createForm('RB\BoltBundle\Form\ItemProjectsType', null, $data);
+        $formProjects   = $this->createForm('RB\BoltBundle\Form\ProjectsType', null, $data);
         
         return $this->render('RBBoltBundle:Default:index.html.twig',[
             'formItem'      => $formItem->createView(),

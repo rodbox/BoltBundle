@@ -87,8 +87,15 @@ class ProjectsController extends Controller
      */
     public function newAction(Request $request)
     {
+        /* SERVICE : router */
+        $bolt = $this->get('rb_bolt.admin.services');
+        /* END SERVICE :  router */
+
+        $data = [
+            'bolt'        => $bolt
+        ];
         $project = new Projects();
-        $form = $this->createForm('RB\BoltBundle\Form\ProjectsType', $project);
+        $form = $this->createForm('RB\BoltBundle\Form\ProjectsType', $project, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -134,8 +141,17 @@ class ProjectsController extends Controller
      */
     public function editAction(Request $request, Projects $project)
     {
+        /* SERVICE : router */
+        $bolt = $this->get('rb_bolt.admin.services');
+        /* END SERVICE :  router */
+
+        $data = [
+            'bolt'        => $bolt
+        ];
+
+
         $deleteForm = $this->createDeleteForm($project);
-        $editForm   = $this->createForm('RB\BoltBundle\Form\ProjectsType', $project);
+        $editForm   = $this->createForm('RB\BoltBundle\Form\ProjectsType', $project,$data);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

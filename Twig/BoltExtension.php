@@ -13,9 +13,13 @@ class BoltExtension  extends \Twig_Extension{
 
 
 
-    public function boltInput($name)
+    public function boltInput($name='default', $class='')
     {
-        echo $this->twig->render('RBBoltBundle:Default:input.html.twig',['id'=>$name]);
+        echo $this->twig->render('RBBoltBundle:Default:input.html.twig',[
+            'id'    => $name,
+            'name'  => $name,
+            'class' => $class
+        ]);
     }
 
 
