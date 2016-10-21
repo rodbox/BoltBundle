@@ -1,6 +1,19 @@
 @import 'bolt_vars.less';
 @import 'bolt_colors.less';
 
+.animate(){
+	-webkit-transition: all 250ms ease;
+	-moz-transition: all 250ms ease;
+	-ms-transition: all 250ms ease;
+	-o-transition: all 250ms ease;
+	transition: all 250ms ease;
+}
+
+
+html{
+	overflow: hidden;
+}
+
 .flowchart-operator-connector-label {
     font-size: 0.7rem !important;
 }
@@ -24,13 +37,34 @@
 	font-size: 0.7rem !important;
 }
 
+
+.onCtrl{
+	.flowchart-operator:before {
+
+		content: attr(id);
+	    font-size: 0.7rem;
+	    margin-top: 7px;
+	    opacity: 0.5;
+	    position: absolute;
+	    right: 0.3rem;
+	}
+}
+
 .flowchart-operator {
+	width:160px !important;
 	border: 4px solid #ccc;
 	border-radius: 0.3rem !important;
 	border-top: 0px !important; 
 	border-bottom: 0px !important; 
 	z-index: 1000;
 	&.selected{
+		-webkit-transition: transform  175ms ease;
+		-moz-transition: transform  175ms ease;
+		-ms-transition: transform  175ms ease;
+		-o-transition: transform  175ms ease;
+		transition: transform  175ms ease;
+
+		transform:scale(1.2);
 		z-index: 1001;
 	}
 	.flowchart-operator-connector{
@@ -40,17 +74,29 @@
 		margin-top: -1px;
 	}
 	.flowchart-operator-connector-small-arrow{
-		display: none !important;
+
+		/* //display: none !important; */
 	}
 	.flowchart-operator-inputs{
 		.flowchart-operator-connector-arrow{
 			left:-4px !important;
 		}
+		.flowchart-operator-connector-small-arrow{
+			border-left-color: rgba(0, 0, 0, 1); 
+			right: -5px
+		/* //display: none !important; */
+		}
 	}
 
 
-	.flowchart-operator-inputs-outputs {
+	.flowchart-operator-outputs {
 	    margin-bottom: 0rem !important;
+		
+		.flowchart-operator-connector-small-arrow{
+			border-left-color: rgba(255, 255, 255,1); 
+			right: -5px
+		/* //display: none !important; */
+		}
 	
 	}
 	.flowchart-operator-title{
@@ -71,13 +117,6 @@
 			}
 		}
 		.flowchart-operator-inputs{
-			.flowchart-operator-connector-arrow{
-				display: none !important;
-				left:-4px !important;
-			}
-		
-			
-
 			&,
 			.flowchart-operator-connector-small-arrow,
 			.flowchart-operator-connector-arrow{
@@ -116,17 +155,19 @@
 	height: calc(~"100vh - 54px");
 }
 #sidebar-inner,
-.panzoom{
-	height: calc(~"100vh - 99px") !important;
+#bolt-pan{
+	height: calc(~"100vh - 99px");
 }
 
 .header-without{
 	#sidebar-left{
 		height: 100vh;
 	}
+	#bolt-pan,
 	#sidebar-inner,
 	#bolt-content{
-		height: calc(~"100vh - 42px");
+		height: calc(~"100vh - 42px") !important;
+		width: 100% !important;
 	}
 
 }
@@ -134,9 +175,9 @@
 #sidebar-inner{
 	
 }
-#bolt-builder{
+/* #bolt-builder{
 	overflow: hidden;
-}
+} */
 label{
 	.sm;
 	display: block;
@@ -212,11 +253,6 @@ textarea:not(.form-control) {
 	padding: 0px !important;
 }
 
-body{
-	overflow: hidden;
-	height: 100vh;
-	width:100vw;
-}
 
 .simplebar .simplebar-scroll-content,
 [data-simplebar-direction] .simplebar-scroll-content {
@@ -243,4 +279,89 @@ input[type="checkbox"] + label{
 	display: inline !important;
 	margin-left: 0.3rem !important;
 	margin-right: 1rem !important;
+}
+
+.card-item{
+	border-left-width: 5px !important;
+	border-left-style: solid !important;
+}
+
+
+
+
+.bolt-group{
+	background-color: transparent !important;
+	border-radius: 0px;
+	.input-group-addon,
+	.input-bolt{
+
+		i{
+			.animate() !important;
+		}
+
+		border:0px !important;
+		border-bottom: 1px solid #fff !important;
+		border-radius: 0px;
+		background-color: transparent !important;
+		border:0px;
+		&,
+		i{
+			color:#fff !important;
+			font-size: 14px !important;
+			line-height:0.9rem;
+		}
+		padding: 0.3rem !important;
+		i,
+		&::-webkit-input-placeholder,
+		&::-moz-placeholder, /* firefox 19+ */
+		&:-ms-input-placeholder, /* ie */
+		&input:-moz-placeholder{
+			color:fade(#fff,20%) !important;
+		}
+		&.bolt-suggest{ 
+
+			+ .input-group-addon i{
+				transform: rotate(180deg);
+			}
+			&.bolt-load + .input-group-addon i{
+		
+				transform: rotate(270deg);
+			}
+		}
+	}
+}
+
+#app-menu{
+	.nav-link{
+		&.active{
+			border-color: #fff !important;
+			color: #000 !important;
+
+		}
+		&:hover{
+			background-color: fade(#fff, 10%) !important;
+		}
+	}
+}
+
+.modal{
+	.CodeMirror {
+    	height: 90vh;
+    	margin: 0 -15px -15px;
+	}
+}
+textarea{
+	&[data-editor="codemirror"]{
+		background-image: url("http://cdn.rodbox.fr/img/function.svg") !important;
+		background-position: center center !important;
+		background-repeat: no-repeat;
+	}
+	&[data-helper^=""]:before{
+		conent:'toto';
+	}
+	&[data-editor="text"]{
+		background-image: url("http://cdn.rodbox.fr/img/documentation.svg") !important;
+		background-position: center center !important;
+		background-repeat: no-repeat;
+	}
 }

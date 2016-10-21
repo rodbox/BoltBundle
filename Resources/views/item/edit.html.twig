@@ -6,6 +6,7 @@
 {{ form_start(edit_form,{action:path("bolt_item_edit",{id:item.id}),attr:{class:"form-live"}}) }}
 
   {{ form_row(edit_form.name,{attr:{class:"form-control"}}) }}
+  {{ form_row(edit_form.type,{attr:{class:"form-control"}}) }}
 
   {{ form_row(edit_form.description,{attr:{class:"form-control"}}) }}
 
@@ -14,8 +15,9 @@
   {{ form_row(edit_form.view,{attr:{class:"form-control"}}) }}
 
   {{ form_row(edit_form.multiple,{attr:{class:"form-control"}}) }}
+  {{ form_row(edit_form.lockme,{attr:{class:"form-control"}}) }}
 
-  {{ form_row(edit_form.type,{attr:{class:"form-control"}}) }}
+  {{ form_row(edit_form.meta,{attr:{class:"form-control"}}) }}
 
  
 <div class="form-footer">

@@ -13,10 +13,13 @@
 			}
 
 			.flowchart-operator-inputs{}
+	
+			-webkit-box-shadow: 0 0 0 0 fade(@color,20%) !important;
+			box-shadow: 0 0 0 0 fade(@color,20%) !important;
 
 			&.selected{
-				-webkit-box-shadow: 0 0 0 6px fade(@color,20%) !important;
-				box-shadow: 0 0 0 6px fade(@color,20%) !important;
+				-webkit-box-shadow: 11px 11px 0 0px fade(@color,20%) !important;
+				box-shadow: 11px 11px 0 0px fade(@color,20%) !important;
 				border-color: darken(@color, 10%) !important;
 
 				.flowchart-operator-connector-small-arrow,
@@ -33,14 +36,11 @@
 			border-top: 2px solid @color !important;
 		}
 
-		#item_projects_base_type{
-			border-color: @color !important;
-		}
 	}
 		
 	.flowchart-operator.type-@{name},
 	form[data-form-filter-content="@{name}"],
-	.card-@{name}{
+	.card-item-@{name}{
 		.flowchart-operator-title,
 		.icon-type{
 			&:before{
@@ -48,6 +48,10 @@
 				content: @icon !important;
 			}
 		}
+	}
+
+	.card-item.card-item-@{name}{
+		border-left-color: @color !important;
 	}
 
 	.mixin-loop(@i + 1);

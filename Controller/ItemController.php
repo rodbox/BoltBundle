@@ -92,6 +92,7 @@ class ItemController extends Controller
             ->findOneByName($name);
 
 
+
         /* SERVICE : rb.serializer */
         $list = $this->get('rb.serializer')->normalize($entities);
         /* END SERVICE :  rb.serializer */
@@ -113,10 +114,14 @@ class ItemController extends Controller
         $entities = $em
           ->getRepository('RBBoltBundle:Item');
 
-        if ($filter == 'all')
+        if ($filter == 'all'){
+
             $entities = $em
                 ->getRepository('RBBoltBundle:Item')
-                ->findAll();
+                ->findBy([],['type'=>'ASC']);
+
+        }
+
         else {
             $entities = $em
                 ->getRepository('RBBoltBundle:Item')

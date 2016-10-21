@@ -1,1 +1,4 @@
-	<input data-url="{{path('bolt_player',{name:name}) }}"  type="text" name="bolt" class="input-bolt">
+<div class="input-group bolt-group">
+	<input data-url="{{path('bolt_player') }}" data-bolt="{{ name }}"  type="text" name="bolt" class="input-bolt"  placeholder="Bolt : {{ name }}" />
+	<div class="input-group-addon"><i class="fa fa-circle-o-notch  "></i></div>
+</div>

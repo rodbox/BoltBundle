@@ -52,10 +52,16 @@ class Item
     /**
      * @var bool
      *
-     * @ORM\Column(name="multiple", type="boolean", nullable=true)
+     * @ORM\Column(name="multiple", type="boolean", nullable=true, options={"default" = false})
      */
     private $multiple;
 
+    /**
+     * @var \stdClass
+     *
+     * @ORM\Column(name="meta", type="array", nullable=true)
+     */
+    private $meta;
 
 
      /**
@@ -72,5 +78,15 @@ class Item
     private $projects;
 
 
-}
 
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="lockme", type="boolean", nullable=true , options={"default" = null})
+     */
+    private $lockme;
+
+
+
+}

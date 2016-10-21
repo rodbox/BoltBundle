@@ -4,6 +4,12 @@ namespace RB\BoltBundle\Services;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormExtensionInterface;
+use Symfony\Component\Form\FormRegistryInterface;
+use Symfony\Component\Form\AbstractType;
+
+
 class BoltAdminService {
 
     public function __construct($container, $session, $router, $doctrine)
@@ -83,6 +89,18 @@ class BoltAdminService {
             $classes[$meta->getName()] = $meta->getName();
 
         return $classes;
+    }
+
+
+
+    public function forms()
+    {
+
+        $forms = [];
+        /* foreach ($formCollection->getExtensions()  as $key => $value)
+            $forms[$value]=$value;
+*/
+        return $forms;
     }
 
 

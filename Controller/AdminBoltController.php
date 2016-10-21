@@ -48,12 +48,14 @@ class AdminBoltController extends Controller
         
         $bolt     = $request->request->get('bolt',[]);
         $project  = $request->request->get('project',[]);
-        $hydrate  = $request->request->get('hydrate',[]);
+        $meta     = $request->request->get('meta',[]);
 
         $dir_bolt = $this->container->getParameter('dir_bolt');
 
         /* SERVICE : rb_file */
-        file_put_contents($dir_bolt.'/hy.json', json_encode($hydrate,JSON_PRETTY_PRINT));
+        //file_put_contents($dir_bolt.'/hy.json', json_encode($hydrate,JSON_PRETTY_PRINT));
+        file_put_contents($dir_bolt.'/bolt-'.$meta['name'].'-expose.json', json_encode($meta,JSON_PRETTY_PRINT));
+        file_put_contents($dir_bolt.'/bolt-'.$meta['name'].'-expose-min.json', json_encode($meta));
         //$toJson = $this->get('rb_file')->toJson($hydrate,$dir_bolt.'/hy.json');
         /* END SERVICE :  rb_file */
 
@@ -63,6 +65,7 @@ class AdminBoltController extends Controller
           ->findOneByName($project['name']);
 
         $project->setBolt($bolt);
+        $project->setMeta($meta);
         $em->persist($project);
         $em->flush();
 
@@ -75,10 +78,7 @@ class AdminBoltController extends Controller
 
         $r    = [
             'infotype' => 'success',
-            'msg'      =>$dir_bolt.'/bolt-'.$project->getName().'.json',
-            'app'      => $this->renderView('::base.html.twig', [
-                'list' => $list
-            ])
+            'meta'      =>$meta
         ];
 
         return new JsonResponse($r);

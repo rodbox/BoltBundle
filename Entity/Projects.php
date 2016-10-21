@@ -56,6 +56,14 @@ class Projects
      */
     private $bolt;
 
+
+    /**
+     * @var object
+     *
+     * @ORM\Column(name="meta", type="object", nullable=true)
+     */
+    private $meta;
+
     /**
      * @var string
      *

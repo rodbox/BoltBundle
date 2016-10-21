@@ -16,58 +16,159 @@ class LoadType implements FixtureInterface
     $types = [
       [
           'name'        => 'free',
+          'start'       => false,
           'description' => 'description.free',
-          'color'       => '#F76C51'
+          'color'       => '#F76C51',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,1],
+          'allowInputs'  => [],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ], 
       [
           'name'        => 'data',
+          'start'       => false,
           'description' => 'description.data',
-          'color'       => '#4EBCDA'
+          'color'       => '#4EBCDA',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,1],
+          'allowInputs'  => [],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ],
       [
           'name'        => 'function',
+          'start'       => true,
           'description' => 'description.function',
-          'color'       => '#27292C'
+          'color'       => '#27292C',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,1],
+          'allowInputs'  => [],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ],
       [
           'name'        => 'entity',
+          'start'       => false,
           'description' => 'description.entity',
-          'color'       => '#009E4D'
+          'color'       => '#009E4D',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,1],
+          'allowInputs'  => [],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ],
       [
           'name'        => 'json',
+          'start'       => false,
           'description' => 'description.json',
-          'color'       => '#98BC73'
+          'color'       => '#98BC73',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,1],
+          'allowInputs'  => [],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ],
       [
           'name'        => 'route',
+          'start'       => false,
           'description' => 'description.route',
-          'color'       => '#878787'
+          'color'       => '#878787',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,0],
+          'allowInputs'  => [],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ],
       [
           'name'        => 'folder',
+          'start'       => false,
           'description' => 'description.folder',
-          'color'       => '#949597'
+          'color'       => '#949597',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,1],
+          'allowInputs'  => [],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ],
       [
           'name'        => 'service',
+          'start'       => false,
           'description' => 'description.service',
-          'color'       => '#DC3522'
+          'color'       => '#DC3522',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,1],
+          'allowInputs'  => [],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ],
       [
           'name'        => 'group',
+          'start'       => true,
           'description' => 'description.group',
-          'color'       => '#ffef00'
+          'color'       => '#ffef00',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,4],
+          'allowInputs'  => [],
+          'allowOutputs' => ['function','group'],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
+      ],
+      [
+          'name'        => 'form',
+          'start'       => false,
+          'description' => 'description.form',
+          'color'       => '#1f23ad',
+          'icon'        => 'fa fa-table',
+          'hook'        => [1,1],
+          'allowInputs'  => ['route'],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ],
       [
           'name'        => 'init',
+          'start'       => false,
           'description' => 'description.init',
-          'color'       => '#4b1194'
+          'color'       => '#4b1194',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,1],
+          'allowInputs'  => [],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ],
       [
           'name'        => 'bolt_project',
+          'start'       => false,
           'description' => 'description.bolt_project',
-          'color'       => '#00ca2a'
+          'color'       => '#00ca2a',
+          'icon'        => 'fa fa-circle',
+          'hook'        => [1,0],
+          'allowInputs'  => ['group'],
+          'allowOutputs' => [],
+          //'disableInput'  => [],
+          //'disableOutput' => [],
+          'typeForm'  => []
       ]
     ];
 
@@ -101,6 +202,14 @@ class LoadType implements FixtureInterface
       $type->setName($typeInfo['name']);
       $type->setDescription($typeInfo['description']);
       $type->setColor($typeInfo['color']);
+      $type->setStart($typeInfo['start']);
+      $type->setIcon($typeInfo['icon']);
+      $type->setHook($typeInfo['hook']);
+      $type->setAllowInputs($typeInfo['allowInputs']);
+      $type->setAllowOutputs($typeInfo['allowOutputs']);
+      //$type->setDisableOutput($typeInfo['disableOutput']);
+      //$type->setDisableInput($typeInfo['disableInput']);
+      $type->setTypeForm($typeInfo['typeForm']);
 
       $em->persist($type);
 
@@ -138,6 +247,19 @@ class LoadType implements FixtureInterface
         'name'        => 'user',
         'type'        => $typesObject['entity'],
         'description' => 'la liste des utilisateurs',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'        => true,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => [
+          'entity'=>'FOS\UserBundle\Model\User'
+        ]
+      ],
+      [
+        'name'        => 'Brand',
+        'type'        => $typesObject['entity'],
+        'description' => 'brand',
         'context'     => 'default',
         'view'        => 'default',
         'multiple'    => false,
@@ -227,12 +349,24 @@ class LoadType implements FixtureInterface
         'lockme'    => false,
         'projects'    => [$projectsObject['default']],
         'meta'        => []
+      ],
+      [
+        'name'        => 'form',
+        'type'        => $typesObject['form'],
+        'description' => 'un form',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'      => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => []
       ]
     ];
 
     foreach ($items as $key_img => $itemInfo) {
       $item = new item();
-      $item->setName($itemInfo['name']);
+
+      $item->setName(ucfirst($itemInfo['name']));
       $item->setDescription($itemInfo['description']);
       $item->setContext($itemInfo['context']);
       $item->setType($itemInfo['type']);

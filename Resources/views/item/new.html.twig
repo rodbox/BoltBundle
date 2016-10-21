@@ -4,12 +4,12 @@
 {% block body %}
 {{ form_start(form, {action:path("bolt_item_new"),attr:{class:"form-live"}}) }}    {{ form_row(form.name,{attr: {class: "form-control"}} ) }}
     {{ form_row(form.description,{attr: {class: "form-control"}} ) }}
+    {{ form_row(form.type,{attr: {class: "form-control"}} ) }}
     {{ form_row(form.context,{attr: {class: "form-control"}} ) }}
     {{ form_row(form.view,{attr: {class: "form-control"}} ) }}
     {{ form_row(form.multiple,{attr: {class: "form-control"}} ) }}
     {{ form_row(form.lockme,{attr: {class: "form-control"}} ) }}
     {{ form_row(form.meta,{attr: {class: "form-control"}} ) }}
-    {{ form_row(form.type,{attr: {class: "form-control"}} ) }}
 
 
     <div class="form-footer">

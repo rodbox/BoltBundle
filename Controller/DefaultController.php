@@ -4,6 +4,10 @@ namespace RB\BoltBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 use RB\BoltBundle\Form\ProjectsType;
 use RB\BoltBundle\Form\ItemType;
 
@@ -38,21 +42,27 @@ class DefaultController extends Controller
     }
 
 	/**
-	* @Route("/player",name="bolt_player")
+	* @Route("/pl",name="bolt_player")
 	*/
 	public function bolt_playerAction(Request $request)
     {
-       	$list = [];
+        $name     = $request->query->get("name");
+        $em       = $this->getDoctrine()->getManager();
+        $projects = $em
+            ->getRepository('RBBoltBundle:Projects')
+            ->findOneByName($name);
 
-        $r    = [
-    	    'infotype' => 'success',
-            'msg'      => 'action : ok',
-    	    'app'      => $this->renderView('::base.html.twig', [
-            	'list' => $list
-    	    ])
+        /* SERVICE : rb.serializer */
+        $project = $this->get('rb.serializer')->normalize($projects);
+        /* END SERVICE :  rb.serializer */
+
+        $r = [
+            'infotype' => 'success',
+            'msg'      => 'ok',
+            'bolt'     => $project
         ];
-
-    	return new JsonResponse($r);
+        
+        return new JsonResponse($project['meta']);
     }
 
 

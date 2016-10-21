@@ -31,9 +31,46 @@ class Type
     /**
      * @var string
      *
-     * @ORM\Column(name="color", type="string", length=7)
+     * @ORM\Column(name="color", type="string", length=7, options={"default" = "#000"})
      */
     private $color;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="icon", type="string", length=30, options={"default" = "fa fa-circle"})
+     */
+    private $icon;
+
+
+    /**
+     * @var array
+     * @ORM\Column(name="hook", type="array")
+     */
+    private $hook;
+
+
+    /**
+     * @var array
+     * @ORM\Column(name="allowInputs", type="array")
+     */
+    private $allowInputs;
+
+    /**
+     * @var array
+     * @ORM\Column(name="allowOutputs", type="array")
+     */
+    private $allowOutputs;
+
+    
+    /**
+     * @var object
+     * @ORM\Column(name="metaform", type="object")
+     */
+    private $typeForm;
+
+
 
     /**
      * @var string
@@ -43,10 +80,19 @@ class Type
     private $description;
 
 
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="start", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $start;
+
+
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -78,6 +124,150 @@ class Type
     }
 
     /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return Type
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set icon
+     *
+     * @param string $icon
+     *
+     * @return Type
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * Get icon
+     *
+     * @return string
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * Set hook
+     *
+     * @param array $hook
+     *
+     * @return Type
+     */
+    public function setHook($hook)
+    {
+        $this->hook = $hook;
+
+        return $this;
+    }
+
+    /**
+     * Get hook
+     *
+     * @return array
+     */
+    public function getHook()
+    {
+        return $this->hook;
+    }
+
+    /**
+     * Set allowInputs
+     *
+     * @param array $allowInputs
+     *
+     * @return Type
+     */
+    public function setAllowInputs($allowInputs)
+    {
+        $this->allowInputs = $allowInputs;
+
+        return $this;
+    }
+
+    /**
+     * Get allowInputs
+     *
+     * @return array
+     */
+    public function getAllowInputs()
+    {
+        return $this->allowInputs;
+    }
+
+    /**
+     * Set allowOutputs
+     *
+     * @param array $allowOutputs
+     *
+     * @return Type
+     */
+    public function setAllowOutputs($allowOutputs)
+    {
+        $this->allowOutputs = $allowOutputs;
+
+        return $this;
+    }
+
+    /**
+     * Get allowOutputs
+     *
+     * @return array
+     */
+    public function getAllowOutputs()
+    {
+        return $this->allowOutputs;
+    }
+
+    /**
+     * Set typeForm
+     *
+     * @param \stdClass $typeForm
+     *
+     * @return Type
+     */
+    public function setTypeForm($typeForm)
+    {
+        $this->typeForm = $typeForm;
+
+        return $this;
+    }
+
+    /**
+     * Get typeForm
+     *
+     * @return \stdClass
+     */
+    public function getTypeForm()
+    {
+        return $this->typeForm;
+    }
+
+    /**
      * Set description
      *
      * @param string $description
@@ -102,26 +292,26 @@ class Type
     }
 
     /**
-     * Set color
+     * Set start
      *
-     * @param string $color
+     * @param boolean $start
      *
      * @return Type
      */
-    public function setColor($color)
+    public function setStart($start)
     {
-        $this->color = $color;
+        $this->start = $start;
 
         return $this;
     }
 
     /**
-     * Get color
+     * Get start
      *
-     * @return string
+     * @return boolean
      */
-    public function getColor()
+    public function getStart()
     {
-        return $this->color;
+        return $this->start;
     }
 }

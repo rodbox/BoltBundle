@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use RB\CoreBundle\Form\Type\GenderType;
 use RB\BoltBundle\Form\Type\RouteType;
@@ -37,6 +38,16 @@ class ItemType extends AbstractType
                     'class'=>''
                 ]
                 ])
+            ->add('type', EntityType::class, [
+                'required'=> false,
+                'class'=>'RBBoltBundle:Type',
+                'choice_label' => 'name',
+                'attr'         => [
+                    'class'     => 'formFilterContent',
+                    'data-cb'   => 'formFilterContent',
+                    'data-cb-app'=> 'bolt'
+                ]
+            ])
             ->add('description', TextareaType::class,[
                 'required'=> false,
                 ])
@@ -50,18 +61,8 @@ class ItemType extends AbstractType
                 ])
             ->add('multiple')
             ->add('lockme')
-            ->add('meta')
-            ->add('type', EntityType::class, [
-                'required'=> false,
-                'class'=>'RBBoltBundle:Type',
-                'choice_label' => 'name',
-                'attr'         => [
-                    'class'     => 'formFilterContent',
-                    'data-cb'   => 'formFilterContent',
-                    'data-cb-app'=> 'bolt'
-                ]
-            ]
-        );
+            ->add('meta',CollectionType::class)
+            ;
     }
     
     /**

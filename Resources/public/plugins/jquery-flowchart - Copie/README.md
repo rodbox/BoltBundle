@@ -1,13 +1,13 @@
 jquery.flowchart
 ================
 
-Javascript jQuery plugin that allows you to draw a flow chart. Take a look at the demo:
+JQuery plugin that allows you to draw a flow chart. Take a look at the demo:
 http://sebastien.drouyer.com/jquery.flowchart-demo/
 
 Description
 -----------
 
-jquery.flowchart.js is an open source javascript jQuery ui plugin that allows you to draw and edit a flow chart.
+jquery.flowchart.js is an open source jquery ui plugin that allows you to draw and edit a flow chart.
 
 Here are the main functionalities provided so far:
 * Draw boxes (called operators) and connections between them.
@@ -27,7 +27,6 @@ Authors
 Contributors
 ------------
 * Simone Gasparini - alias [@simmyg89](https://github.com/simmyg89) - for bug fixes and code formatting
-* Guijin Ding - alias [@dingguijin](https://github.com/dingguijin) - for bug fixes
 
 Documentation
 -------------

@@ -1,14 +1,18 @@
-<div class=" m-c"  style="position:absolute; z-index:1000; ">
-              <div class="btn-group btn-group-sm">
-                    <button class="btn btn-default zoom-out set-zoom" data-zoom="0.8"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
-                    <button class="btn btn-default reset">100</button>
-                    <button class="btn btn-default zoom-in set-zoom" data-zoom="1.4"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-                </div>
-                  <div class="btn-group btn-group-sm">
-                    <button id="bolt_hydrate" role="button" class="btn btn-default "><i class="fa fa-tint" aria-hidden="true"></i>
-              </button>
-                  </div>
-                  <div class="btn-group btn-group-sm">
-                    <button id="delete_selected_button" role="button" class="btn btn-danger "><i class="fa fa-remove"></i></button>
-                  </div>
-                </div>
+<div class=""  style="position:absolute; z-index:1000; margin:0.8rem 0.5rem; ">
+  <div class="btn-group btn-group-sm">
+        <button class="btn btn-default zoom-out set-zoom" data-zoom="0.8"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+        <button class="btn btn-default reset">100</button>
+        <button class="btn btn-default zoom-in set-zoom" data-zoom="1.4"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+  </div>
+  <div class="btn-group btn-group-sm">
+    <button id="bolt_hydrate" role="button" class="btn btn-default btn-boltadmin" data-boltaction="hydrate"><i class="fa fa-tint" aria-hidden="true"></i></button>
+  </div>
+  <div class="btn-group btn-group-sm">
+    <button id="delete_selected_button" role="button" class="btn btn-danger btn-boltadmin" data-boltaction="deleteSelect"><i class="fa fa-remove"></i></button>
+  </div>
+  <div class="btn-group btn-group-sm">
+    <select name="roads" id="roads" class="btn btn-default">
+      
+    </select>
+  </div>
+</div>

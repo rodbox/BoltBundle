@@ -1,6 +1,6 @@
 (function($) {
 	$.fn.bolt = function(paramSend) {
-		var rand = Math.random().toString(36).substring(2);
+		var rand = $.rand();
 
 		var defauts = {
 			t 			: $(this),
@@ -8,7 +8,7 @@
 			s			: {},
 			id			: 'bolt-'+rand ,
 			url 		: $(this).data('url'),
-			name 		: 'single',
+			name 		: $(this).data('bolt'),
 			files 		: ['single','editor','single'],
 			helper 		: true,
 			filter 		: true,
@@ -32,7 +32,8 @@
 		$(this).on({
 			focusin : function (e){
 				e.preventDefault();
-
+				p.c.addClass('bolt-suggest');
+				p.c.addClass('bolt-load');
 				$.ajax({
 					url 	: p.url,
 					type 	: 'GET',
@@ -41,27 +42,31 @@
 						name:p.name
 					},
 					async 	: false,
-					cache 	: false
-				})
-				.success(function(json, textStatus) {
-					p.data  = json.app;
-					p.count = json.app.start.length;
-					p.start = json.app.start;
-					p.items = json.app.items;
-					start();
-					p.c.addClass("open");
+					cache 	: false,
+					success : function(json, textStatus) {
+						/*p.data  = json.app;
+						p.count = json.app.start.length;
+						p.start = json.app.start;
+						p.items = json.app.items;*/
+						start();
+						p.c.addClass("open");
 
-				})
-				.error(function() {
-					p.info = $.appInfo.add({
-						type 	: 'error',
-						open 	: true,
-						msg		: 'probleme de chargement'
-					});
+					},
+					error: function() {
+						p.info = $.appInfo.add({
+							type 	: 'error',
+							open 	: true,
+							msg		: 'probleme de chargement'
+						});
+					},
+					complete:function(jq, status){
+						p.c.removeClass('bolt-load');
+					}
 				});
 			},
 			focusout : function (e){
 				close();
+				p.c.removeClass('bolt-suggest');
 			},
 			keydown: function (e){
 				var t = $(this);
@@ -91,14 +96,15 @@
 		})
 
 		function init(){
-			p.t.addClass("bolt-input");
-			p.t.wrapAll("<div id='"+p.id+"' class='bolt-wrapper input-group'></div>");
+			//p.t.addClass("bolt-input");
+			p.t.parents(".bolt-group").attr('id',p.id);
+
 			$('#'+p.id).append("<div id='"+p.suggest+"' class='bolt-suggest list-group'></div>");
 
 			p.c = $("#"+p.id);
 			p.s = $("#"+p.suggest);
 
-			select();
+			//select();
 		}
 
 		function from(fromID){
@@ -215,21 +221,7 @@
 		}
 
 
-		function select () {
-			var select = $("<select>",{"id":p.selectID,"class":"btn-default btn"})
-			$.each(p.files, function(index, val) {
-				var opt = $("<option>").val(val).html(val);
-				select.append(opt);
-			});
-			select.change(function(){
-				var t = $(this);
-				p.name = t.val();
-				p.t.focus();
-			});
-			var grp = $('<span>',{class:'input-group-btn'}).append(select);
-			p.c.prepend(grp);
-
-		}
+		
 
 		$.itemLoadType = {
 			free : function (id){
@@ -422,6 +414,6 @@
 
 $(document).ready(function($) {
 
-	$('#bolt-input').bolt();
+	$('.input-bolt').bolt();
 
 });

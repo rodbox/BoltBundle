@@ -64,7 +64,7 @@ class Item
     private $meta;
 
 
-     /**
+    /**
      *
      * @ORM\ManyToOne(targetEntity="RB\BoltBundle\Entity\Type", cascade={"persist"})
      */

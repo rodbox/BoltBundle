@@ -7,6 +7,7 @@
 {% block breadcrumb %}{% endblock breadcrumb %}
 
 {% block body %}
+	
 	<div class="col-xs-4 col-md-2 col-lg-1 bg-1">
 		<div id="sidebar-left" class="simplebar" data-simplebar-direction="vertical">
 			{% include 'RBBoltBundle:Items:Menu/menu-item.html.twig' %}
@@ -18,7 +19,7 @@
 			<!-- BEGIN TABSCONTENT  -->
 			<div class="tab-content">
 			    <div id="project-setting-tab-1" class="tab-pane active">
-					<div  class="col-xs-12 col-md-3 bg-4-l-4 ">
+					<div  class="col-xs-12 col-md-3 bg-4-l-4 m-c-t no-pad">
 						<div id="sidebar-inner" class="simplebar" data-simplebar-direction="vertical">
 							{% include 'RBBoltBundle:Items:item-edit.html.twig' with {formItem:formItem} only %}
 						</div>
@@ -26,8 +27,8 @@
 					<div  class="col-xs-12 col-md-9 ">
 							{% include 'RBBoltBundle:Items:Menu/menu-project.html.twig'  %}
 						
-						<div id="bolt-pan" class="panzoom m-c-t">
-							<div id="bolt-builder" style="height:1500px; width:1500px; ">
+						<div id="bolt-pan" class="panzoom m-c-t" style="overflow:hidden !important;">
+							<div id="bolt-builder" style="height:1500px; width:100%; ">
 							</div>
 						</div>
 					</div>
@@ -42,7 +43,13 @@
 		</div>
 		{{ mustache_tpl('bolt_item','@RBBoltBundle:tpl:list-item.html.twig') }}
 		{{ mustache_tpl('bolt_hydrate','@RBBoltBundle:tpl:list-hydrate.html.twig') }}
+		{{ mustache_tpl('road_css','@RBBoltBundle:tpl:road-css.html.twig') }}
 	</div>
+	<script>
+	$(document).ready(function($) {
+		$.sui.set('K','bolt');
+	});
+	</script>
 	<noscript>
   <style>
     .simplebar, [data-simplebar-direction] {
