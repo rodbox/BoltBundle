@@ -63,6 +63,9 @@ class BoltAdminService {
             'paperjs'    => 'paperjs',
             'plupload'   => 'plupload',
             'summernote' => 'summernote',
+            'spectrum'   => 'spectrum',
+            'calendar'   => 'calendar',
+            'datepicker' => 'datepicker',
             'crop'       => 'crop'
         ];
     }
@@ -71,10 +74,14 @@ class BoltAdminService {
     public function folder()
     {
         return [
-            'dir_cdn'     => 'dir_cdn',
-            'dir_user'    => 'dir_user',
-            'dir_project' => 'dir_project',
-            'dir_tmp'     => 'dir_tmp'
+            'dir_cdn'      => 'dir_cdn',
+            'dir_users'    => 'dir_users',
+            'dir_media'    => 'dir_media',
+            'dir_upload'   => 'dir_upload',
+            'dir_palettes' => 'dir_palettes',
+            'dir_snippets' => 'dir_snippets',
+            'dir_sound'    => 'dir_sound',
+            'dir_tmp'      => 'dir_tmp'
         ];
     }
 
@@ -91,6 +98,15 @@ class BoltAdminService {
         return $classes;
     }
 
+    public function entityMeta($className)
+    {
+
+       $entity = $this->container->get('rb.serializer')->normalize(new $className());
+       $k=[];
+       foreach ($entity as $key => $value)
+           $k[]=(is_array($value))?$key.'.index':$key;
+       return $k;
+    }
 
 
     public function forms()

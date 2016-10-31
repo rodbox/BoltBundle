@@ -57,6 +57,21 @@ class Item
     private $multiple;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="automatic", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $automatic;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="defaultValue", type="string", nullable=true, options={"default" = null})
+     */
+    private $defaultValue;
+
+    /**
      * @var \stdClass
      *
      * @ORM\Column(name="meta", type="array", nullable=true)
@@ -86,7 +101,6 @@ class Item
      * @ORM\Column(name="lockme", type="boolean", nullable=true , options={"default" = null})
      */
     private $lockme;
-
 
 
 
@@ -218,6 +232,54 @@ class Item
     public function getMultiple()
     {
         return $this->multiple;
+    }
+
+    /**
+     * Set automatic
+     *
+     * @param boolean $automatic
+     *
+     * @return Item
+     */
+    public function setAutomatic($automatic)
+    {
+        $this->automatic = $automatic;
+
+        return $this;
+    }
+
+    /**
+     * Get automatic
+     *
+     * @return boolean
+     */
+    public function getAutomatic()
+    {
+        return $this->automatic;
+    }
+
+    /**
+     * Set defaultValue
+     *
+     * @param string $defaultValue
+     *
+     * @return Item
+     */
+    public function setDefaultValue($defaultValue)
+    {
+        $this->defaultValue = $defaultValue;
+
+        return $this;
+    }
+
+    /**
+     * Get defaultValue
+     *
+     * @return string
+     */
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
     }
 
     /**

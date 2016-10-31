@@ -19,14 +19,10 @@ class AdminBoltController extends Controller
 	*/
 	public function loadAction(Request $request)
     {
-       	$bolt = $request->request->get('bolt',[]);
-        $project = $request->request->get('project',[]);
+        $bolt     = $request->request->get('bolt',[]);
+        $project  = $request->request->get('project',[]);
 
-
-       
-        
-
-        $em      = $this->getDoctrine()->getManager();
+        $em       = $this->getDoctrine()->getManager();
         $projects = $em
           ->getRepository('RBBoltBundle:Projects')
           ->findOneByName($project['name']);
@@ -34,7 +30,6 @@ class AdminBoltController extends Controller
         /* SERVICE : rb.serializer */
         $project = $this->get('rb.serializer')->normalize($projects);
         /* END SERVICE :  rb.serializer */
-
 
         return new JsonResponse($project);
     }
@@ -45,7 +40,6 @@ class AdminBoltController extends Controller
     */
     public function saveAction(Request $request)
     {
-        
         $bolt     = $request->request->get('bolt',[]);
         $project  = $request->request->get('project',[]);
         $meta     = $request->request->get('meta',[]);
@@ -69,7 +63,6 @@ class AdminBoltController extends Controller
         $em->persist($project);
         $em->flush();
 
-
         /* SERVICE : rb_bolt.admin.service */
         $export = $this->get('rb_bolt.admin.services')->export($bolt,$project);
         /* END SERVICE :  rb_bolt.admin.service */
@@ -78,9 +71,30 @@ class AdminBoltController extends Controller
 
         $r    = [
             'infotype' => 'success',
-            'meta'      =>$meta
+            'meta'     => $meta
         ];
 
         return new JsonResponse($r);
     }
+
+
+    /**
+    * @Route("/entity_meta",name="entity_meta" , options={"expose"=true})
+    */
+    public function entity_metaAction(Request $request)
+    {
+
+        $entity = $request->query->get("entity");
+        /* SERVICE : rb_bolt_admin */
+        $entityMeta = $this->get('rb_bolt.admin.services')->entityMeta($entity);
+        /* END SERVICE :  rb_bolt_admin */
+
+        $r    = [
+            'infotype' => 'success',
+            'msg'      => 'action : ok',
+            'list'      => $entityMeta
+        ];
+
+        return new JsonResponse($r);
+    }        
 }

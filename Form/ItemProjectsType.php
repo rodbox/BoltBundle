@@ -58,6 +58,10 @@ class ItemProjectsType extends AbstractType
                         'class'=>'form-control'
                     ]
                     ])
+                ->add('id', HiddenType::class,[
+                    'required'=> false,
+                    'attr'=>[]
+                    ])
                 ->add('type', EntityType::class, [
 
                     'class'=>'RBBoltBundle:Type',
@@ -87,7 +91,12 @@ class ItemProjectsType extends AbstractType
                     ])
                 ->add('view', ChoiceType::class,[
                     'required'=> false,
-                    'choices'=>['default'=>'default'],
+                    'choices'=>[
+                        'default'=>'default',
+                        'users'=>'users',
+                        'colors'=>'colors',
+                        'fa'=>'fa'
+                    ],
                     'attr'=>[
                         'class'=>'form-control'
                     ]
@@ -117,6 +126,12 @@ class ItemProjectsType extends AbstractType
                                  'class'=>'form-control'
                             ]
                         ])
+                        ->add('default', TextType::class,[
+                            'required'=> false,
+                            'attr'=>[
+                                 'class'=>'form-control'
+                            ]
+                        ])
                         ->add('automatic',  CheckboxType::class,[
                             'required'=>false
                         ])
@@ -133,7 +148,7 @@ class ItemProjectsType extends AbstractType
                 // FUNCTION
                 ->add(
                     $builder->create('function', FormType::class, ["inherit_data" => true])
-                        ->add('function', TextareaType::class,[
+                        ->add('function_js', TextareaType::class,[
                             'required'=> false,
                             'attr'=>[
                                 'class'=> 'for-type for-function form-control modal-edit cm-editor',
@@ -142,7 +157,19 @@ class ItemProjectsType extends AbstractType
                                 'rows'=>'7'
                             ]
                         ])
+                        ->add('function_php', TextareaType::class,[
+                            'required'=> false,
+                            'attr'=>[
+                                'class'=> 'for-type for-function form-control modal-edit cm-editor',
+                                'data-editor'=>'codemirror',
+                                'data-cm-mode'=>'php',
+                                'rows'=>'7'
+                            ]
+                        ])
                         ->add('loop', CheckboxType::class,[
+                            'required'=> false
+                        ])
+                        ->add('pointer', TextType::class,[
                             'required'=> false
                         ])
                 )
@@ -155,6 +182,12 @@ class ItemProjectsType extends AbstractType
                         ]
                         ))
                         ->add('url', UrlType::class,[
+                            'required'=> false,
+                            'attr'=>[
+                                'class'=> 'for-type for-json for-api form-control'
+                            ]
+                        ])
+                        ->add('dir', TextType::class,[
                             'required'=> false,
                             'attr'=>[
                                 'class'=> 'for-type for-json for-api form-control'
@@ -204,6 +237,13 @@ class ItemProjectsType extends AbstractType
                             'required'=> false,
                             'choices'=>$this->entitys,
                             'attr'=>[
+                                'class'=> 'for-type for-entity form-control set-data-entity'
+                            ]
+                        ])
+                        ->add('index_value', ChoiceType::class,[
+                            'required'=> false,
+                            'choices'=>$this->entitys,
+                            'attr'=>[
                                 'class'=> 'for-type for-entity  form-control'
                             ]
                         ])
@@ -214,13 +254,6 @@ class ItemProjectsType extends AbstractType
                                 'data-editor'=>'codemirror',
                                 'data-cm-mode'=>'php',
                                 'rows'=>'7'
-                            ]
-                        ])
-                        ->add('index_value', ChoiceType::class,[
-                            'required'=> false,
-                            'choices'=>$this->entitys,
-                            'attr'=>[
-                                'class'=> 'for-type for-entity  form-control'
                             ]
                         ])
                 )
@@ -239,7 +272,15 @@ class ItemProjectsType extends AbstractType
                             'required'=> false,
                             'choices'=> $this->services,
                             'attr'=>[
-                                'class'=> 'for-type for-route form-control chosen'
+                                'class'=> 'for-service for-route form-control chosen'
+                            ]
+                        ])
+                        ->add('service_action', TextareaType::class,[
+                            'required'=> false,
+                            'attr'=>[
+                                'class'=> 'for-service for-service form-control modal-edit cm-editor',
+                                'data-editor'=>'codemirror',
+                                'data-cm-mode'=>'php',
                             ]
                         ])
                 )
@@ -253,6 +294,13 @@ class ItemProjectsType extends AbstractType
                             'class'=>''
                         ]
                         ))
+                        ->add('routes', ChoiceType::class,[
+                            'required'=> false,
+                            'choices'=>$this->routes,
+                            'attr'=>[
+                                'class'=> 'for-type for-route form-control '
+                            ]
+                        ])
                         ->add('form', TextType::class,[
                             'required'=> false,
    
@@ -275,27 +323,18 @@ class ItemProjectsType extends AbstractType
                             'required'=> false,
                             'choices'=> $this->folder,
                             'attr'=>[
-                                'class'=> 'for-type for-route form-control'
+                                'class'=> 'for-type for-folder form-control'
+                            ]
+                        ])
+                        ->add('type', ChoiceType::class,[
+
+                            'choices'=> ['files'=>'files','directories'=>'directories'],
+                            'attr'=>[
+                                'class'=> 'for-type for-folder form-control'
                             ]
                         ])
                 )
                 // END : FOLDER
-                ->add(
-                    $builder->create('service', FormType::class, array(
-                        'required'=> false,
-                        'by_reference' => 'service',
-                        'attr'         => [
-                            'class'=>''
-                        ]
-                        ))
-                        ->add('service', ChoiceType::class,[
-                            'required'=> false,
-                            'choices'=> $this->services,
-                            'attr'=>[
-                                'class'=> 'for-type for-route form-control'
-                            ]
-                        ])
-                )
                 // DATA
                 ->add(
                     $builder->create('data', FormType::class, array(
@@ -308,12 +347,13 @@ class ItemProjectsType extends AbstractType
                         ->add('filter-content', TextareaType::class,[
                             'required'=> false,
                             'attr'=>[
-                                'class'=>'form-filter  form-control'
+                                'rows'=>5,
+                                'class'=>'form-filter  form-control data-filter-content'
                             ]
                         ])
                         ->add('filter-action', ChoiceType::class,[
                             'required'=> false,
-                            'choices'=>['url','mail','line'],
+                            'choices'=>['url'=>'url','mail'=>'mail','line'=>'line'],
                             'attr'=>[
                                 'class'=> 'for-type for-data form-control'
                             ]

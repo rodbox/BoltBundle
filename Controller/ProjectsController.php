@@ -92,7 +92,7 @@ class ProjectsController extends Controller
         /* END SERVICE :  router */
 
         $data = [
-            'bolt'        => $bolt
+            'bolt' => $bolt
         ];
         $project = new Projects();
         $form = $this->createForm('RB\BoltBundle\Form\ProjectsType', $project, $data);
@@ -169,8 +169,8 @@ class ProjectsController extends Controller
 
         return $this->render('RBBoltBundle:project:edit.html.twig', [
             'project'     => $project,
-            'edit_form'         => $editForm->createView(),
-            'delete_form'   => $deleteForm->createView()
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView()
         ]);
     }
   

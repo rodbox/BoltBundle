@@ -33,6 +33,16 @@
         {% endfor %}
     </div>
 	<div id="itemsetting-tab-all" class="tab-pane">
+            <div id="item-pointers" style="margin:0.3rem 0px;">
+                <div style="width:49%; display:inline-block; vertical-align:top;">
+                    <label for="">Pointers from</label>
+                    <div id="item-pointers-froms"></div>
+                </div>
+                <div style="width:50%; display:inline-block; vertical-align:top; text-align:right; border-left:1px dashed #ccc; padding-bottom:0.3rem; min-height:52px;">
+                    <label for="">Pointers to</label>
+                    <div id="item-pointers-tos"></div>
+                </div>
+            </div>
     	{% for item in formItem.all %}
            {{ form_row(item) }}
         {% endfor %}

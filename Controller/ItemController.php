@@ -25,8 +25,10 @@ class ItemController extends Controller
       public function upd_by_projectAction(Request $request)
       {
         $item_projects = $request->request->get("item_projects");
-        $name          = $item_projects["base"]["name"];
-        $type          = $item_projects["base"]["type"];
+        extract($item_projects["base"]);
+        extract($item_projects["all"]);
+
+        //$meta          = $item_projects["meta"][$type];
         $em            = $this->getDoctrine()->getManager();
 
 
@@ -42,32 +44,14 @@ class ItemController extends Controller
         
         $item->setMeta($meta);
         $item->setType($type);
-        $item->setMultiple(true); 
-       // $item->setLock(true);
-        /* 
-        $item->setDescription($item_projects['base']['description']);
-        $item->setContext($item_projects['base']['context']);
-        $item->setView($item_projects['base']['view']);
-        
-*/
+        $item->setView($view);
+        $item->setAutomatic(isset($automatic)); 
+        $item->setLockme(isset($lockme)); 
+        $item->setMultiple(isset($multiple)); 
+
         $em->persist($item);
 
         $em->flush();
-
-      /*  $base          = $item_projects["base"];
-        $all           = $item_projects["all"];
-        $meta          = $item_projects["meta"][$base["type"]];
-        
-        $em            = $this->getDoctrine()->getManager();
-        $session       = $request->getSession();*/
-/*
-        $Item          = $em
-            ->getRepository('RBBoltBundle:Item')
-            ->findOneByName($name);
-
-
-*/
-       
 
         $r    = [
             'infotype' => 'success',
@@ -91,7 +75,9 @@ class ItemController extends Controller
             ->getRepository('RBBoltBundle:Item')
             ->findOneByName($name);
 
-
+        $session = $request->getSession();
+        // set and get session attributes
+        $project = $session->get('bolt');
 
         /* SERVICE : rb.serializer */
         $list = $this->get('rb.serializer')->normalize($entities);
@@ -181,6 +167,8 @@ class ItemController extends Controller
         $form = $this->createForm('RB\BoltBundle\Form\ItemType', $item);
 
         $item->setLockme(true);
+        $item->setAutomatic(false);
+        $item->setDefaultValue('');
         $item->setMeta([]);
         $form->handleRequest($request);
 

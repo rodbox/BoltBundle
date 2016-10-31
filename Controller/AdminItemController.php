@@ -16,45 +16,33 @@ class AdminItemController extends Controller
     /**
      * @Route("/new", name="/new")
      */
-    public function newAction(Request $request
-        )
+    public function newAction(Request $request)
     {
-        return $this->render('RBBoltBundle:AdminItem:new.html.twig', [
-
-        ]);
+        return $this->render('RBBoltBundle:AdminItem:new.html.twig', []);
     }
 
     /**
      * @Route("/edit", name="/edit")
      */
-    public function editAction(Request $request
-        )
+    public function editAction(Request $request)
     {
-        return $this->render('RBBoltBundle:AdminItem:edit.html.twig', [
-
-        ]);
+        return $this->render('RBBoltBundle:AdminItem:edit.html.twig', []);
     }
 
     /**
      * @Route("/del", name="/del")
      */
-    public function delAction(Request $request
-        )
+    public function delAction(Request $request)
     {
-        return $this->render('RBBoltBundle:AdminItem:del.html.twig', [
-
-        ]);
+        return $this->render('RBBoltBundle:AdminItem:del.html.twig', []);
     }
 
     /**
      * @Route("/load", name="/load")
      */
-    public function loadAction(Request $request
-        )
+    public function loadAction(Request $request)
     {
-        return $this->render('RBBoltBundle:AdminItem:load.html.twig', [
-
-        ]);
+        return $this->render('RBBoltBundle:AdminItem:load.html.twig', []);
     }
 
 }

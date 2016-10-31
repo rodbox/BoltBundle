@@ -133,7 +133,7 @@ class LoadType implements FixtureInterface
       ],
       [
           'name'        => 'form',
-          'start'       => false,
+          'start'       => true,
           'description' => 'description.form',
           'color'       => '#1f23ad',
           'icon'        => 'fa fa-table',
@@ -303,7 +303,7 @@ class LoadType implements FixtureInterface
         'meta'        => []
       ],
       [
-        'name'        => 'alert',
+        'name'        => 'Alert',
         'type'        => $typesObject['function'],
         'description' => 'une fonction alert',
         'context'     => 'default',
@@ -329,15 +329,43 @@ class LoadType implements FixtureInterface
         ]
       ],
       [
-        'name'        => 'Init',
-        'type'        => $typesObject['init'],
-        'description' => 'une initialisation',
+        'name'        => 'AddMedia',
+        'type'        => $typesObject['function'],
+        'description' => 'send mail',
         'context'     => 'default',
         'view'        => 'default',
         'multiple'    => false,
         'lockme'    => false,
         'projects'    => [$projectsObject['default']],
-        'meta'        => []
+        'meta'        => [
+          'function'=>''
+        ]
+      ],
+      [
+        'name'        => 'Plupload',
+        'type'        => $typesObject['init'],
+        'description' => 'upload de fichier',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => [
+          'init'=>'plupload'
+        ]
+      ],
+      [
+        'name'        => 'Spectrum',
+        'type'        => $typesObject['init'],
+        'description' => 'un color picker',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => [
+          'init'=>'plupload'
+        ]
       ],
       [
         'name'        => 'group',

@@ -16,14 +16,23 @@
 			note 		: false,
 			suggest 	: 'bolt-'+rand+'-suggest',
 			selectID	: 'bolt-'+rand+'-select',
+			initID		: 'bolt-'+rand+'-init',
 			show 		: '#bolt-'+rand+'-suggest .choice-show',
 			count		: 0,
-			current		: 0,
-			from		: '',
-			typeCurrent	: '',
+			mode 		: 'init',
+			fromCur		: '',
+			toCur	 		: '',
+			typeCur		: '',
+			itemCur		: '',
+			roadCur		: '',
+			dataCur 	: {},
+			multipleCur : true,
 			stock		: {},
 			pointer 	: [],
-			pointerCount: 0
+			pointerCount: 0,
+			timeout 	: '',
+			delay 		: 500,
+			keyLoop		: false
 		};
 		var p		= $.extend(defauts, paramSend);
 
@@ -31,64 +40,76 @@
 
 		$(this).on({
 			focusin : function (e){
-				e.preventDefault();
-				p.c.addClass('bolt-suggest');
-				p.c.addClass('bolt-load');
-				$.ajax({
-					url 	: p.url,
-					type 	: 'GET',
-					dataType: 'json',
-					data 	: {
-						name:p.name
-					},
-					async 	: false,
-					cache 	: false,
-					success : function(json, textStatus) {
-						/*p.data  = json.app;
-						p.count = json.app.start.length;
-						p.start = json.app.start;
-						p.items = json.app.items;*/
-						start();
-						p.c.addClass("open");
+				clearTimeout(p.timeout);
+				if(!p.c.hasClass("open")){
+					p.c.addClass('bolt-suggest');
+					p.c.addClass('bolt-load');
 
-					},
-					error: function() {
-						p.info = $.appInfo.add({
-							type 	: 'error',
-							open 	: true,
-							msg		: 'probleme de chargement'
-						});
-					},
-					complete:function(jq, status){
-						p.c.removeClass('bolt-load');
-					}
-				});
+					$.ajax({
+						url 	: p.url,
+						type 	: 'GET',
+						dataType: 'json',
+						data 	: {
+							name:p.name
+						},
+						async 	: false,
+						cache 	: false,
+						success : function(json, textStatus) {
+
+							p.data = json;
+							start();
+							p.c.addClass("open");
+
+						},
+						error: function() {
+							p.info = $.appInfo.add({
+								type 	: 'error',
+								open 	: true,
+								msg		: 'probleme de chargement'
+							});
+						},
+						complete:function(jq, status){
+							p.c.removeClass('bolt-load');
+						}
+					});
+				}
 			},
 			focusout : function (e){
-				close();
-				p.c.removeClass('bolt-suggest');
+				p.timeout = setTimeout(function(){
+					close();
+					p.c.removeClass('bolt-suggest');
+				},p.delay);
+				
 			},
 			keydown: function (e){
 				var t = $(this);
 
 				if(e.keyCode == 27){
-					if(t.val()=="")
+					if(t.val()==""){
 						reset();
-					else
+					}
+					else{
 						t.val("");
+						t.attr('value',"");
+					}
 				}
 				else if(e.keyCode == 40)
-					focusNext();
+					kNext();
 
 				else if(e.keyCode == 38)
-					focusPrev();
+					kPrev();
 
 				else if(e.keyCode == 13)
 					valid();
+				else if(e.keyCode == 32 && p.multipleCur){
+					e.preventDefault();
+					toggleSelect();
+				}
+				else{}
 			},
 			keyup: function(e){
 				if(p.filter){
-					var eval = $.inArray(e.keyCode, [40,38,13]);
+					var eval = $.inArray(e.keyCode, [40,38,13,32]);
 					if (eval<0)
 						filter();
 				}
@@ -96,205 +117,265 @@
 		})
 
 		function init(){
-			//p.t.addClass("bolt-input");
 			p.t.parents(".bolt-group").attr('id',p.id);
 
+			$('#'+p.id).prepend("<div id='"+p.initID+"' class='bolt-init'></div>");
 			$('#'+p.id).append("<div id='"+p.suggest+"' class='bolt-suggest list-group'></div>");
 
 			p.c = $("#"+p.id);
 			p.s = $("#"+p.suggest);
-
-			//select();
+			p.s.css({
+				'max-height':'70vh',
+				'overflow-y':'auto',
+				'overflow-x':'hidden'
+			})
+			p.init = $("#"+p.initID);
+			p.s.simplebar();
 		}
-
-		function from(fromID){
-			p.pointer = p.items[fromID].pointer;
-			p.t.val(itemRoad);
-			p.from    = itemRoad;
-			p.pointerCount = Object.keys(p.pointer).length;
-
-			if(p.pointer)
-				item(pointerID(0));
-			else{
-				p.pointer      = [];
-				p.pointerCount = 0;
-
-				go();
-			}
-
+		function prev(){
 		}
 
 		function next(){
-			if(p.current<p.pointerCount){
-				p.current++;
-				item(pointerID(p.current));
-			}
-			else
-				go();
 		}
 
-		function prev(){
+		function load(itemId){
 
 		}
 
 		function reset(){
-			p.current 	= 0;
-			$.stock.reset();
-			p.pointer 	= [];
-			p.from		= '';
 			start();
 		}
 
-		function list(){
-			var itemList = p.items[item];
-		}
-
 		function start(){
-			p.s.html('<div class="bolt-step">');
-			$.each(p.start, function(index, val) {
-				var itemLi = $('<a>',{
-					href 			: '#',
-					class 			: 'btn-bolt-start list-group-item bolt-start-choice choice-show',
-					'data-key'		: p.items[val].title,
-					'data-index'	: index,
-					'data-data'		: val,
-					'data-type'		: 'start'
-				});
-				var title = $('<h4>',{ class:'list-group-item-heading'}).html(p.items[val].title);
-				itemLi.append(title);
-
-				if(p.helper){
-					var helper = $('<p>',{class:'list-group-item-text helper-text'}).html(p.items[val].helper);
-
-					itemLi.attr({
-						'data-container': p.id+'.bolt-wrapper a[data-index='+index+']',
-						'data-content'	: p.items[val].helper,
-						'data-placement': 'right',
-						'data-toggle'	: 'popover'
-					})
-					itemLi.append(helper);
-				}
-
-				p.s.append(itemLi);
-				p.s.append('</div>');
+			clearRoad();
+			p.s.html('');
+			$.each(p.data.start, function(index, val) {
+				var item = getItem(val);
+				var itemLi = $.mustache('suggest_start',{item:item});
+				
+				p.s.append($(itemLi));
 			});
-			p.s.find("a").first().addClass('active');
+			p.s.find("a").first().addClass('focus');
 		}
+
+		function initRoad(){
+			var itemfocus = p.s.find('.focus').first().data();
+
+			p.itemCur   = itemfocus.src;
+			p.itemIdCur = itemfocus.index;
+			p.roadCur	= itemfocus.roadinit;
+			var metaItem = getItem(p.itemCur);
+			p.tosCur  	= metaItem.tos[p.roadCur];
+			//p.roadCur	= itemfocus['roads'];
+
+			$.each(p.tosCur, function(k,v){
+				p.dataCur[v]='';
+			});
+
+			p.s.simplebar('recalculate');
+		}
+
+		function clearRoad(){
+			p.fromCur	= '';
+			p.toCur		= '';
+			p.typeCur	= '';
+			p.itemCur	= '';
+			p.roadCur	= '';
+			p.dataCur	= {};
+			p.mode 		= 'start';
+			p.roadCur   = '';
+		}
+
+		function execRoad() {
+			//if loop go to item
+			//else clear
+			console.log('exec');
+			console.log(p.dataCur);
+
+		}
+
+		function toggleSelect() {
+			p.s.find('.focus').first().toggleClass('selected');
+		}
+
+
+		function autoscroll() {
+			// fixer le scroll a la navigation clavier
+			/*var act = p.s.find('.focus');
+			p.s.stop().css({'scrollTop':act.offset().top});*/
+		}
+
 
 		function valid(){
-			if(p.t.val()!=""){
+			var itemfocus = p.s.find('.focus').first();
 
-				alert(p.t.val())
-				var data = {
-					val : p.t.val(),
-					suggest: $('#'+p.suggest).find('.active').attr('data-data')
-				}
-				$.post('/i/load',data, function(json) {
-					/*optional stuff to do after success */
-				},'json');
-			}
+			if (p.mode == 'start')
+				initRoad();
+
+			
+			//init item
+			// if last || alone 
+			// execute
+			//else{
+			// load
+			//}
+
+			if(isLast(itemfocus))
+				execRoad();
 
 
+			var to = getTo(p.itemCur);
 
-			// p.s.find(".active").trigger("click");
-			// var itemVal = p.t.val();
-			// // console.log(pointerID(p.current));
-			// $.stock.push(pointerID(p.current),itemVal);
-			// p.t.val("");
+			var data = {
+				input  : p.t.val(),
+				select : itemfocus.data(),
+				itemRef: p.itemCur,
+				itemId : p.itemIdCur.substring(1),
+				road   : p.roadCur,
+				to 	   : to 
+			};
 
-			// next();
+			var url = Routing.generate('bolt_item');
+			$.get(url, data, function(json){
+				p.s.html('');
+				p.mode = json.type.name;
+				
+
+				var dataClust = $.clust.init(json.data.data, 30);
+				console.log('dataClust');
+				console.log(dataClust);
+
+				/**
+				* TODO : Use cluster system pour les gros volumes
+				**/
+
+				$.each(json.data.data, function(k, v){
+					var model 		= $.mustache('suggest_'+json.data.view, {item:v, meta:json.item});
+					var valModel 	= $(model);
+					valModel.attr('data-val', JSON.stringify(v));
+
+					p.s.append(valModel);
+				});
+
+				p.s.find("a").first().addClass('focus');
+				p.s.simplebar('recalculate');
+				p.t.val('');
+				p.t.focus();
+			},'json').fail(function(err){
+				$.setFlash('erreur '+ err.status,'error', err.responseText);
+			});
 		}
 
 		function close(){
-			$('#'+p.suggest).html('');
-			p.c.removeClass('open');
-		}
-
-		/**
-		 * Charge l'item en cours
-		 */
-		function item(id){
-			console.log(id);
-			p.itemCurrent = p.items[id];
-			p.typeCurrent = p.itemCurrent.type;
-			// $.itemLoadType[p.typeCurrent](id);
+			setTimeout(function(){
+				$('#'+p.suggest).html('');
+				p.c.removeClass('open');
+			},200)
 		}
 
 
-		
+		$.datatype = {
+			default: {
+				set : function(item, data){
 
-		$.itemLoadType = {
-			free : function (id){
-				console.log("item load free");
+				},
+				get : function(item){
 
-				p.s.html("");
-				// console.log(p.itemCurrent);
+				}
 			},
-			data : function (id){
-				console.log("item load data");
-				console.log(p.itemCurrent);
+			init: {
+				set : function(item, data){
+
+				},
+				get : function(item){
+
+				}
 			},
-			route : function (id){
-				console.log("item load route");
-				console.log(p.itemCurrent);
+			entity: {
+				set : function(item, data){
+
+				},
+				get : function(item){
+
+				}
+			},
+			group: {
+				set : function(item, data){
+
+				},
+				get : function(item){
+
+				}
+			},
+			json: {
+				set : function(item,data){
+
+				},
+				get : function(item){
+
+				}
+			},
+			free : {
+				set : function (item, data){
+
+				},
+				get : function (item){
+
+				}
+			},
+			data : {
+				set : function (item, data){
+
+				},
+				get : function (item){
+
+				}
+			},
+			route : {
+				set : function (item, data){
+
+				},
+				get : function (item){
+			
+				}
 			}
 		}
 
-		$.stock = {
-			push	: function(key,val){
-				var data  = {}
-				data[key] = val;
-				p.stock   = $.extend(p.stock, data);
-			},
-			reset	: function(){
-				p.stock = {};
-			},
-			extract	: function(){
-				var str = "";
-				$.each(p.stock, function(index, val) {
-					str = str + " var "+index+" = '"+val+"';";
-				});
-
-				return str;
-			}
-		}
-
-		function pointerID(step){
-			return Object.keys(p.pointer)[step];
-		}
-
-		/**
-		 * Execute la fonction en cours avec les parametres stockées
-		 */
-		function go(){
-			eval($.stock.extract());
-			eval(p.items[p.from].function);
-		}
 
 		/**
 		 * Navigation clavier suivant
 		 */
-		function focusNext(){
-			var active = p.s.find(".active");
-			if(!active.is(':first-child'))
-				active.removeClass('active').trigger("mouseleave").next(".choice-show").addClass('active').trigger("mouseover");
-			else
-				p.s.find("a").eq(1).addClass('active');
+		function kNext(){
+			var focus = p.s.find(".focus");
+			if(!focus.is(':last-child'))
+				focus.removeClass('focus').next(".choice-show").addClass('focus');
+			else if(p.keyLoop){
+				focus.removeClass('focus');
+				p.s.find(".choice-show").first().addClass('focus');
+			}
+			else{}
+			autoscroll();
 		}
 
 		/**
 		 * Navigation clavier precendent
 		 */
-		function focusPrev(){
-			var active = p.s.find(".active");
-
-				active.removeClass('active').trigger("mouseleave").prev(".choice-show").addClass('active').trigger("mouseover");
+		function kPrev(){
+			var focus = p.s.find(".focus");
+			if(!focus.is(':first-child'))
+				focus.removeClass('focus').prev(".choice-show").addClass('focus');
+			else if(p.keyLoop){
+				focus.removeClass('focus');
+				p.s.find(".choice-show").last().addClass('focus');
+			}
+			else{}
+			autoscroll();
 		}
 
 
 		function filter (){
 			var choices = p.s.find('.bolt-start-choice');
-			choices.hide().removeClass('choice-show').removeClass('active');
+			choices.hide().removeClass('choice-show').removeClass('focus');
 			p.val       = p.t.val();
 			regexp();
 
@@ -316,7 +397,7 @@
 				}
 				else
 					choice.hide().removeClass('choice-show');
-				$(".choice-show").first().addClass('active');
+				$(".choice-show").first().addClass('focus');
 			})
 
 		}
@@ -376,44 +457,55 @@
         }
 
         function debug(id){
-			console.log('__DEBUG__:' + id);
-			console.log('## Count :');
-			console.log(p.count);
-			console.log('## Current :');
-			console.log(p.current);
-			console.log('## From :');
-			console.log(p.from);
-			console.log('## ItemCurrent :');
-			console.log(p.itemCurrent);
-			console.log('## TypeCurrent :');
-			console.log(p.typeCurrent);
-			console.log('## Stock :');
-			console.log(p.stock);
-			console.log('## Pointer :');
-			console.log(p.pointer);
-			console.log('## PointerCount :');
-			console.log(p.pointerCount);
-			console.log('p');
-			console.log(p);
-			console.log('__END__');
+
         }
 
-		$(document).on('click','.btn-bolt-suggest',function (e){
-			e.preventDefault();
-			p.t.val($(this).data('data'));
-		})
+        function suggest(item){
+        	$('#'+p.suggest).html('');
+        	$('#'+p.suggest).append("<div>"+item+"</div>");
+        }
 
-		$(document).on('click','.btn-bolt-start',function (e){
-			e.preventDefault();
+        function getData(itemRef){
+        	return p.dataCur[itemRef];
+        }
 
-			from($(this).data('data'));
+        function setData(itemRef, data) {
+        	return p.dataCur.items[itemRef] = data;
+        }
+
+        function getItem(item) {
+        	return p.data.items[item];
+        }
+
+        function getTo(item, road) {
+        	//var item = getItem(item);
+        	console.log('getTo');
+
+        }
+
+        function isLast(item) {
+        	/*console.log('p.tosCur');
+        	console.log(p.tosCur);*/
+        	console.log('isLast');
+        }
+
+		$(document).on('click','a.btn-bolt-suggest',function (e){
+			var t = $(this);
+			if(e.ctrlKey && p.multipleCur){
+				e.preventDefault();
+				t.toggleClass('selected');
+			}
+			else{
+				
+				t.addClass('focus');
+				valid();
+				p.t.focus();
+			}
 		})
 	}
 })(jQuery);
 
 
 $(document).ready(function($) {
-
 	$('.input-bolt').bolt();
-
 });

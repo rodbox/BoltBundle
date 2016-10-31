@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
 use RB\BoltBundle\Form\ProjectsType;
 use RB\BoltBundle\Form\ItemType;
 
@@ -56,6 +58,10 @@ class DefaultController extends Controller
         $project = $this->get('rb.serializer')->normalize($projects);
         /* END SERVICE :  rb.serializer */
 
+        $session = $request->getSession();
+        // set and get session attributes
+        $session->set('bolt', $project);
+
         $r = [
             'infotype' => 'success',
             'msg'      => 'ok',
@@ -63,6 +69,20 @@ class DefaultController extends Controller
         ];
         
         return new JsonResponse($project['meta']);
+    }
+
+
+    /**
+    * @Route("/bitem",name="bolt_item", options={"expose"=true})
+    */
+    public function loadItemAction(Request $request)
+    {
+        /* SERVICE : rb.bolt */
+        $data = $this->get('rb_bolt.services')->load($request);
+        /* END SERVICE :  rb.bolt */
+       
+
+        return new JsonResponse($data);
     }
 
 

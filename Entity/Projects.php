@@ -225,4 +225,28 @@ class Projects
     {
         return $this->bolt;
     }
+
+    /**
+     * Set meta
+     *
+     * @param \stdClass $meta
+     *
+     * @return Projects
+     */
+    public function setMeta($meta)
+    {
+        $this->meta = $meta;
+
+        return $this;
+    }
+
+    /**
+     * Get meta
+     *
+     * @return \stdClass
+     */
+    public function getMeta()
+    {
+        return $this->meta;
+    }
 }

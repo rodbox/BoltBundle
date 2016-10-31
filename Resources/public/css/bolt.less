@@ -213,10 +213,25 @@ textarea:not(.form-control) {
 
 .nav-tabs.nav-tabs-light{
 	border-bottom: 1px solid @color !important;
-	.nav-item .nav-link.active{
-    	background: transparent none repeat scroll 0 0;
-    	border: 1px solid @color !important;
-    	border-bottom: 0px !important;
+	.nav-item .nav-link{
+    	border: 2px solid transparent;
+		&.active{
+	    	background: transparent none repeat scroll 0 0;
+	    	border-color: @color !important;
+	    	border-bottom-color: #FCFCFC !important;
+		}
+	}
+}
+
+.nav-tabs.nav-tabs-inverse{
+	border-bottom: 1px solid transparent !important;
+	.nav-item .nav-link{
+    	border: 2px solid transparent;
+    	color: #fff;
+		&.active{
+	    	background: #fff !important;
+    		color: #323232 !important;
+		}
 	}
 }
 
@@ -287,7 +302,8 @@ input[type="checkbox"] + label{
 }
 
 
-
+@suggestBg: #212326;
+@suggestC: #fff;
 
 .bolt-group{
 	background-color: transparent !important;
@@ -300,7 +316,7 @@ input[type="checkbox"] + label{
 		}
 
 		border:0px !important;
-		border-bottom: 1px solid #fff !important;
+		
 		border-radius: 0px;
 		background-color: transparent !important;
 		border:0px;
@@ -316,21 +332,77 @@ input[type="checkbox"] + label{
 		&::-moz-placeholder, /* firefox 19+ */
 		&:-ms-input-placeholder, /* ie */
 		&input:-moz-placeholder{
-			color:fade(#fff,20%) !important;
+			color:fade(@suggestC,20%) !important;
 		}
-		&.bolt-suggest{ 
+	}
 
+	.input-bolt{
+		+ .input-group-addon i{
+			opacity:0.2;
+		}
+		&:focus{
 			+ .input-group-addon i{
-				transform: rotate(180deg);
+				opacity:1;
 			}
-			&.bolt-load + .input-group-addon i{
-		
-				transform: rotate(270deg);
-			}
+		}
+	}
+	
+
+	&.bolt-suggest{ 
+
+		.input-group-addon i{
+			transform: rotate(180deg);
+		}
+		&.bolt-load + .input-group-addon i{
+	
+			transform: rotate(270deg);
 		}
 	}
 }
 
+
+
+.bolt-suggest.list-group{
+	position:absolute !important;
+	width:250px;
+	left:0;
+	margin-top:0.6rem;
+	z-index: 3500;
+	-webkit-border-bottom-right-radius: 0.3rem;
+	-webkit-border-bottom-left-radius: 0.3rem;
+	-moz-border-radius-bottomright: 0.3rem;
+	-moz-border-radius-bottomleft: 0.3rem;
+	border-bottom-right-radius: 0.3rem;
+	border-bottom-left-radius: 0.3rem;
+
+	&,
+	a.list-group-item{
+		background-color: @suggestBg;
+		border-color: transparent !important;
+	}
+	
+
+	a.list-group-item{
+		color:@suggestC;
+		border-bottom : 1px solid fade(@suggestC, 3%) !important;
+
+		&.focus,
+		&:focus,
+		&:hover{
+			background-color: lighten(@suggestBg,10%);
+		}
+		&.active{
+			background-color: lighten(@suggestBg,20%);
+			
+			&.focus,
+			&:focus,
+			&:hover{
+				background-color: lighten(@suggestBg,25%);
+			}
+		}
+		
+	}
+}
 #app-menu{
 	.nav-link{
 		&.active{
@@ -346,15 +418,49 @@ input[type="checkbox"] + label{
 
 .modal{
 	.CodeMirror {
-    	height: 90vh;
+    	height: 80vh;
     	margin: 0 -15px -15px;
+    	border-radius: 0rem 0 0.3rem 0.3rem;
+    	*{
+    		font-size: 1.1rem;
+    		font-weight:bolder;
+    	}
+    	.CodeMirror-linenumber{
+			color: #ccc;
+		    font-size: 0.9rem !important;
+		    font-weight: normal !important;
+		    padding: 0.4rem 0.2rem;
+    	}
+    	.CodeMirror-linenumber,
+    	pre{
+			padding:0.1rem 0.3rem ;
+			line-height: 1rem;
+    	}
+    	.CodeMirror-activeline-gutter{
+    		.CodeMirror-linenumber{
+				background-color: fade(#fff,5%);
+    		}
+    	}
 	}
 }
 textarea{
+	&.data-filter-content{
+		background-image: url("http://cdn.rodbox.fr/img/list.svg") !important;
+		background-position: center center !important;
+		background-repeat: no-repeat;
+	}
 	&[data-editor="codemirror"]{
 		background-image: url("http://cdn.rodbox.fr/img/function.svg") !important;
 		background-position: center center !important;
 		background-repeat: no-repeat;
+		&:after {
+			content: attr("data-cm-mode");
+		    font-size: 0.7rem;
+		    margin-top: 7px;
+		    opacity: 0.5;
+		    position: absolute;
+		    right: 0.3rem;
+		}
 	}
 	&[data-helper^=""]:before{
 		conent:'toto';
@@ -364,4 +470,65 @@ textarea{
 		background-position: center center !important;
 		background-repeat: no-repeat;
 	}
+}
+a.list-group-item{
+	text-decoration:none !important;
+	color:#323232;
+	&:hover,
+	&.active{
+		text-decoration:none !important;
+		background-color:rgba(0,0,0,0.05);
+	}
+	&.selected{
+		&:before{
+			font-family: FontAwesome;
+			font-style: normal !important;
+			font-weight: normal !important;
+			content:'\f00c';
+			background-color: fade(#449D44, 80%) !important;
+			border-radius: 0 50% 50% 0;
+		    color: #fff !important;
+		    font-size: 0.6rem;
+		    font-style: normal !important;
+		    font-weight: 400 !important;
+		    height: 24px;
+		    left: 0;
+		    line-height: 21px;
+		    padding: 0.1rem;
+		    position: absolute;
+		    top: calc(~"50% - 12px");
+		    vertical-align: middle;
+		    width: 16px;
+		}
+	}
+	h4{  font-weight: bold!important;}
+}
+
+.item-helper-content{
+	background-color: #323232;
+    border-radius: 0.3rem;
+    margin-left: 0.5rem;
+    margin-top: -14px;
+    width: 250px !important;
+    z-index: 3000;
+    *{
+    	border-top:0px !important;
+    }
+    background-image: url("http://cdn.rodbox.fr/img/helper.svg") !important;
+	background-position: center center !important;
+	background-repeat: no-repeat;
+	background-size: 70%;
+	th{
+		border-bottom-width:1px !important;
+		border-bottom-color:fade(#fff,30%) !important;
+	}
+	table.table tbody tr:hover{
+		td{
+			color:#fff !important;
+		}
+	}
+}
+
+h4{
+	font-size:1.2rem;
 }
