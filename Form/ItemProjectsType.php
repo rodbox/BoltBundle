@@ -55,7 +55,7 @@ class ItemProjectsType extends AbstractType
                 ->add('name', TextType::class,[
                     'required'=> true,
                     'attr'=>[
-                        'class'=>'form-control'
+                        'class'=>'form-control setter-item-name'
                     ]
                     ])
                 ->add('id', HiddenType::class,[
@@ -395,13 +395,22 @@ class ItemProjectsType extends AbstractType
                             'class'=>''
                         ]
                         ))
-                        ->add('init', ChoiceType::class,[
+                        ->add('vendor', ChoiceType::class,[
                             'choices'=>$this->init,
-                            'multiple'=>true,
-                            'expanded'=>true,
+                            'multiple'=>false,
+                            'expanded'=>false,
                             'required'=> false,
                             'attr'=>[
-                                'class'=>''
+                                'class'=>'data-set-initvendor'
+                            ]
+                        ])
+                        ->add('init', ChoiceType::class,[
+                            'choices'=>['default'=>'default'],
+                            'multiple'=>false,
+                            'expanded'=>false,
+                            'required'=> true,
+                            'attr'=>[
+                                'class'=>'data-get-initvendor'
                             ]
                         ])
                        

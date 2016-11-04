@@ -25,6 +25,7 @@ class ItemController extends Controller
       public function upd_by_projectAction(Request $request)
       {
         $item_projects = $request->request->get("item_projects");
+        $id = $request->request->get("id");
         extract($item_projects["base"]);
         extract($item_projects["all"]);
 
@@ -40,7 +41,7 @@ class ItemController extends Controller
 
         $item          = $em
           ->getRepository('RBBoltBundle:Item')
-          ->findOneByName($name);
+          ->find($id);
         
         $item->setMeta($meta);
         $item->setType($type);

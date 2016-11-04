@@ -27,7 +27,7 @@
 					<div  class="col-xs-12 col-md-9 ">
 							{% include 'RBBoltBundle:Items:Menu/menu-project.html.twig'  %}
 						
-						<div id="bolt-pan" class="panzoom m-c-t" style="overflow:hidden !important;">
+						<div id="bolt-pan" class="panzoom m-c-t rmenu" data-rmenu='#rmenu' >
 							<div id="bolt-builder" style="height:1500px; width:100%; ">
 							</div>
 						</div>
@@ -41,6 +41,7 @@
 			</div>
 			<!-- END TABSCONTENT  -->
 		</div>
+		{% include 'RBBoltBundle:Items:Menu/rmenu.html.twig' %}
 		{{ mustache_tpl('bolt_item','@RBBoltBundle:tpl:list-item.html.twig') }}
 		{{ mustache_tpl('bolt_hydrate','@RBBoltBundle:tpl:list-hydrate.html.twig') }}
 		{{ mustache_tpl('road_css','@RBBoltBundle:tpl:road-css.html.twig') }}

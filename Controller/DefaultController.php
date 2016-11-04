@@ -44,7 +44,7 @@ class DefaultController extends Controller
     }
 
 	/**
-	* @Route("/pl",name="bolt_player")
+	* @Route("/pl",name="bolt_player" , options={"expose"=true})
 	*/
 	public function bolt_playerAction(Request $request)
     {
@@ -58,17 +58,44 @@ class DefaultController extends Controller
         $project = $this->get('rb.serializer')->normalize($projects);
         /* END SERVICE :  rb.serializer */
 
+        $starts  = array_map(function($value) {
+            $refExplode = explode('-',substr($value,1));
+            return $refExplode[0];
+        },$project['meta']['start']);
+
+
+        $where = 'item.id IN(:ids) ';
+        $qb = $em
+            ->createQueryBuilder('item')
+            ->select('item')
+            ->from('RBBoltBundle:Item','item')
+            ->leftJoin('item.type', 'type')
+            ->where($where)
+            ->setParameter('ids', $starts)
+            ->getQuery()
+            ->getResult();
+
+        $results = $this->get('rb.serializer')->normalize($qb);
+/*
+$results = $em
+            ->getRepository('RBBoltBundle:Item')
+            ->findAll();
+        $results = $this->get('rb.serializer')->normalize($results);*/
         $session = $request->getSession();
+
         // set and get session attributes
         $session->set('bolt', $project);
 
         $r = [
             'infotype' => 'success',
             'msg'      => 'ok',
-            'bolt'     => $project
+            'start'    => $results,
+            'bolt'     => $project,
+            'data'     => $results,
+            'view'     => '<a href="#" class="list-group-item" @click="initRoad" data-road="road">{{name}}</a>',
         ];
         
-        return new JsonResponse($project['meta']);
+        return new JsonResponse($r);
     }
 
 
@@ -80,7 +107,34 @@ class DefaultController extends Controller
         /* SERVICE : rb.bolt */
         $data = $this->get('rb_bolt.services')->load($request);
         /* END SERVICE :  rb.bolt */
-       
+
+        return new JsonResponse($data);
+    }
+
+
+
+    /**
+    * @Route("/rexec",name="bolt_road_init", options={"expose"=true})
+    */
+    public function roadInitAction(Request $request)
+    {
+        /* SERVICE : rb.bolt */
+        $data = $this->get('rb_bolt.services')->init();
+        /* END SERVICE :  rb.bolt */
+
+        return new JsonResponse($data);
+    }
+
+
+
+    /**
+    * @Route("/rexec",name="bolt_road_execute", options={"expose"=true})
+    */
+    public function roadExecuteAction(Request $request)
+    {
+        /* SERVICE : rb.bolt */
+        $data = $this->get('rb_bolt.services')->execute();
+        /* END SERVICE :  rb.bolt */
 
         return new JsonResponse($data);
     }

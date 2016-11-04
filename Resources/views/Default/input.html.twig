@@ -1,4 +1,5 @@
 <div class="input-group bolt-group">
-	<input data-url="{{path('bolt_player') }}" data-bolt="{{ name }}"  type="text" name="bolt" class="input-bolt"  placeholder="Bolt : {{ name }}" />
+	<input data-url="{{path('bolt_player') }}" data-bolt="{{ name }}" @focus="init"  type="text" name="bolt" class="input-bolt"  placeholder="Bolt : {{ name }}" style="height: 34px;" />
 	<div class="input-group-addon"><i class="fa fa-circle-o-notch  "></i></div>
+	<div id="bolt-suggest-{{name}}" class="bolt-suggest"></div>
 </div>

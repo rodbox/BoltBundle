@@ -270,7 +270,7 @@ class LoadType implements FixtureInterface
         ]
       ],
       [
-        'name'        => 'json',
+        'name'        => 'Palettes',
         'type'        => $typesObject['json'],
         'description' => 'un fichier json ou une url api rest',
         'context'     => 'default',
@@ -278,7 +278,22 @@ class LoadType implements FixtureInterface
         'multiple'    => false,
         'lockme'    => false,
         'projects'    => [$projectsObject['default']],
-        'meta'        => []
+        'meta'        => [
+          'dir'=>'/var/www/html/__rodbox_local__/_LABTEST_/colors/palettes/all.json'
+        ]
+      ],
+      [
+        'name'        => 'FontAwesome',
+        'type'        => $typesObject['json'],
+        'description' => 'un fichier json ou une url api rest',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => [
+          'dir'=>'/var/www/html/__rodbox_cdn__/list/fa.json'
+        ]
       ],
       [
         'name'        => 'ZIP',
@@ -292,9 +307,20 @@ class LoadType implements FixtureInterface
         'meta'        => []
       ],
       [
+        'name'        => 'MD',
+        'type'        => $typesObject['service'],
+        'description' => 'Mardown parser',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'        => true,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => []
+      ],
+      [
         'name'        => 'folder',
         'type'        => $typesObject['folder'],
-        'description' => 'un fichier folder ou une url api rest',
+        'description' => 'un fichier folder',
         'context'     => 'default',
         'view'        => 'default',
         'multiple'    => false,
@@ -351,7 +377,7 @@ class LoadType implements FixtureInterface
         'lockme'    => false,
         'projects'    => [$projectsObject['default']],
         'meta'        => [
-          'init'=>'plupload'
+          'vendor'=>'plupload'
         ]
       ],
       [
@@ -364,7 +390,20 @@ class LoadType implements FixtureInterface
         'lockme'    => false,
         'projects'    => [$projectsObject['default']],
         'meta'        => [
-          'init'=>'plupload'
+          'vendor'=>'plupload'
+        ]
+      ],
+      [
+        'name'        => 'Summernote',
+        'type'        => $typesObject['init'],
+        'description' => 'un color picker',
+        'context'     => 'default',
+        'view'        => 'default',
+        'multiple'    => false,
+        'lockme'    => false,
+        'projects'    => [$projectsObject['default']],
+        'meta'        => [
+          'vendor'=>'summernote'
         ]
       ],
       [

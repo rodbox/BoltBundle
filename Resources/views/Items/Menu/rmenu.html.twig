@@ -1,0 +1,9 @@
+<div id="rmenu" class="list-group rmenu-menu" style="left: 440px; top: 540px; display:none; position:fixed">
+    	<a href="{{path('bolt_item_new') }}" id="bolt_items_new" class=" btn-modal list-group-item list-group-item-action autoclose" title="{{ 'route.bolt_item_new.title' | trans }}" data-modal="modalSm"><i class="fa fa-plus-circle"></i> {{ 'route.bolt_item_new.title' | trans }}</a>
+
+    	<a href="{{path('bolt_item_expose') }}" id="bolt_items_load" class="list-group-item list-group-item-action  btn-tpl autoclick autoclose" data-tpl="bolt_item" data-target="#items-list"><i class="fa fa-folder-o"></i></a>
+		
+		<a href='#' id="bolt_hydrate" role="button" class="list-group-item list-group-item-action btn-boltadmin" data-boltaction="hydrate"><i class="fa fa-tint" aria-hidden="true"></i> {{'action.hydrate'|trans}}</a>
+
+  <button id="delete_selected_button" role="button" class="list-group-item list-group-item-action btn-boltadmin autoclose" data-boltaction="deleteSelect"><i class="fa fa-remove"></i> {{'action.del'|trans}}</button>
+</div>

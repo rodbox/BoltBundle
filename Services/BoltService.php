@@ -44,6 +44,18 @@ class BoltService {
     }
 
 
+    function init($id = 0)
+    {
+        return ['roadInit : '.$id];
+    }
+
+
+    function execute()
+    {
+        return ['execute road PHP '];
+    }
+
+
 
     function load_item($itemId)
     {

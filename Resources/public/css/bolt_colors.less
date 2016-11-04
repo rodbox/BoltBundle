@@ -3,6 +3,15 @@
 	@color: extract(@colors,@i);
 	@icon: extract(@icons,@i);
 
+	.c-type-@{name}{
+		color: @color;
+
+	}
+
+	.bg-type-@{name}{
+		background-color: @color;
+	}
+	
 	.flowchart-operator{
 		&.type-@{name}{
 

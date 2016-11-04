@@ -1,14 +1,14 @@
   <div class="app-menu bg-1-d-1">
   <form id="bolt-form" action="#" class="form-inline">
-    <div class="btn-group btn-group-sm pull-left">
+    <div class="btn-group pull-left">
       <a href="{{path('bolt_projects_new') }}" id="bolt-projects-new" class="btn btn-default btn-modal"  title="{{ 'route.bolt_projects_new.title' | trans }}"><i class="fa fa-plus"></i></a>
       <a href="#" id="bolt-projects-clear" class="btn btn-default btn-boltadmin" data-boltaction="clear"  title="clear"><i class="fa fa-trash"></i></a>
       <a href="{{path('bolt_load') }}" id="bolt-projects-open" class="btn btn-default autoclick btn-boltadmin" data-boltaction="open"  title="{{ 'route.bolt_projects_new.title' | trans }}"><i class="fa fa-folder-o"></i></a>
     </div>
       <div class="input-group" style="width:150px; display:inline-flex">
-        <input type="text" class="form-control" name="name" value="{{ project.name | default('default') }}" style="height: 28px; padding: 0.3rem">
+        <input type="text" class="form-control" name="name" value="{{ project.name | default('default') }}" style="padding: 0.3rem">
           <span class="">
-          <a href="{{path('bolt_save') }}" id="bolt-projects-save" class="btn btn-default btn-sm btn-boltadmin" data-boltaction="save"  title="{{ 'route.bolt_projects_save.title' | trans }}"><i class="fa fa-floppy-o"></i></a>
+          <a href="{{path('bolt_save') }}" id="bolt-projects-save" class="btn btn-default btn-boltadmin" data-boltaction="save"  title="{{ 'route.bolt_projects_save.title' | trans }}"><i class="fa fa-floppy-o"></i></a>
           </span>
         </div>
  
